@@ -28,7 +28,7 @@ export default function MypageDropdown() {
   const handleLogout = async () => {
     try {
       // 백엔드에 로그아웃 요청 (필수는 아니지만, API 맞춰서 호출)
-      await axiosInstance.get("/api/signout");
+      await axiosInstance.post("/api/signout");
 
       // 클라이언트에서 토큰 및 유저 정보 제거
       localStorage.removeItem("token");
