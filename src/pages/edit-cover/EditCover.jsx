@@ -4,13 +4,21 @@ import axiosInstance from '../../api/axiosInstance';
 
 import './EditCover.css';
 
+const BACKEND_BASE_URL =
+  import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080';
+
+// 프론트 배포 base 경로 (예: "/trip-blocks-deploy/")
+const FRONT_BASE_URL = import.meta.env.BASE_URL;
+
 export default function EditCover() {
-  const [coverImage, setCoverImage] = useState('/images/covers/cover1.jpg');
-  const BACKEND_BASE_URL =
-    import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080';
+  // 기본 배경: public/images/covers/cover1.jpg
+  const [coverImage, setCoverImage] = useState(
+    `${FRONT_BASE_URL}images/covers/cover1.jpg`
+  );
+
   const navigate = useNavigate();
 
-  // 기본 이미지 중 어떤 걸 선택했는지(파일명만, 예: "cover1.jpg")
+  // 기본 이미지 중 어떤 걸 선택했는지(파일 경로 그대로, 예: "/images/covers/cover1.jpg")
   const [selectedCoverImage, setSelectedCoverImage] = useState(null);
 
   // 업로드한 실제 파일
@@ -19,9 +27,19 @@ export default function EditCover() {
   const fileInputRef = useRef(null);
 
   function resolveImageUrl(path) {
-    if (!path) return '/images/covers/cover1.jpg';
+    // 값이 없으면 기본 커버
+    if (!path) return `${FRONT_BASE_URL}images/covers/cover1.jpg`;
+
+    // 절대 URL이면 그대로
     if (path.startsWith('http')) return path;
-    return path;   // 기본 커버(/images/covers/...)는 그대로 사용
+
+    // 업로드된 이미지인 경우 (백엔드 경로)
+    if (path.startsWith('/uploads')) {
+      return `${BACKEND_BASE_URL}${path}`;
+    }
+
+    // 그 외는 프론트 public 기준 경로 ("/images/..." 등)
+    return `${FRONT_BASE_URL}${path.replace(/^\//, '')}`;
   }
 
   // 커버 이미지 불러오기
@@ -32,17 +50,17 @@ export default function EditCover() {
 
         if (res.data.coverImage) {
           const imgPath = res.data.coverImage;
+
+          // 화면에 보이는 URL로 변환해서 세팅
           setCoverImage(resolveImageUrl(imgPath));
 
-          // 기본 커버인지, 업로드된 건지 구분 (선택사항)
+          // 기본 커버 이미지인 경우
           if (imgPath.startsWith('/images/covers/')) {
-            // 🔽 여기를 파일명 대신 전체 경로로 저장
-            // const fileName = imgPath.split('/').pop(); // "cover1.jpg"
-            // setSelectedCoverImage(fileName);
+            // 서버에는 "/images/covers/cover1.jpg" 이렇게 그대로 보냄
             setSelectedCoverImage(imgPath);
             setUploadedFile(null);
           } else {
-            // 업로드된 이미지라면
+            // 업로드된 이미지인 경우
             setSelectedCoverImage(null);
             setUploadedFile(null);
           }
@@ -58,9 +76,11 @@ export default function EditCover() {
   const handleSelectDefaultCover = (fileName) => {
     const fullPath = `/images/covers/${fileName}`;
 
-    setCoverImage(fullPath);           // 화면에 보여줄 이미지
-    setSelectedCoverImage(fullPath);   // 서버에 보낼 값 (전체 경로)
-    setUploadedFile(null);             // 업로드 파일 사용 안 함
+    // 화면에 보이는 건 BASE_URL 붙인 URL
+    setCoverImage(resolveImageUrl(fullPath));
+    // 서버로 보낼 값은 그대로 "/images/covers/cover1.jpg"
+    setSelectedCoverImage(fullPath);
+    setUploadedFile(null);
   };
 
   // 플러스 버튼 눌렀을 때 숨겨진 파일 input 열기
@@ -89,10 +109,9 @@ export default function EditCover() {
       if (uploadedFile) {
         formData.append('uploadedCoverImage', uploadedFile);
       } else if (selectedCoverImage) {
-        // 🔹 이제는 "cover1.jpg"가 아니라 "/images/covers/cover1.jpg"를 보냄
+        // "/images/covers/cover1.jpg" 같은 값 그대로 전송
         formData.append('selectedCoverImage', selectedCoverImage);
       }
-      // 둘 다 없으면 비어있는 FormData 전송
 
       const res = await axiosInstance.put('/api/cover-image', formData, {
         headers: {
@@ -126,28 +145,44 @@ export default function EditCover() {
             className="cover-select-btn"
             onClick={() => handleSelectDefaultCover('cover1.jpg')}
           >
-            <img className="cover-select-img" src="/images/covers/cover1.jpg" alt="cover1" />
+            <img
+              className="cover-select-img"
+              src={`${FRONT_BASE_URL}images/covers/cover1.jpg`}
+              alt="cover1"
+            />
           </button>
           <button
             type="button"
             className="cover-select-btn"
             onClick={() => handleSelectDefaultCover('cover2.jpg')}
           >
-            <img className="cover-select-img" src="/images/covers/cover2.jpg" alt="cover2" />
+            <img
+              className="cover-select-img"
+              src={`${FRONT_BASE_URL}images/covers/cover2.jpg`}
+              alt="cover2"
+            />
           </button>
           <button
             type="button"
             className="cover-select-btn"
             onClick={() => handleSelectDefaultCover('cover3.jpg')}
           >
-            <img className="cover-select-img" src="/images/covers/cover3.jpg" alt="cover3" />
+            <img
+              className="cover-select-img"
+              src={`${FRONT_BASE_URL}images/covers/cover3.jpg`}
+              alt="cover3"
+            />
           </button>
           <button
             type="button"
             className="cover-select-btn"
             onClick={() => handleSelectDefaultCover('cover4.jpg')}
           >
-            <img className="cover-select-img" src="/images/covers/cover4.jpg" alt="cover4" />
+            <img
+              className="cover-select-img"
+              src={`${FRONT_BASE_URL}images/covers/cover4.jpg`}
+              alt="cover4"
+            />
           </button>
 
           {/* 플러스 버튼: 파일 업로드 */}
@@ -158,7 +193,7 @@ export default function EditCover() {
           >
             <img
               className="cover-plus-img"
-              src="/icons/plus-icon-gray.png"
+              src={`${FRONT_BASE_URL}icons/plus-icon-gray.png`}
               alt="upload"
             />
           </button>

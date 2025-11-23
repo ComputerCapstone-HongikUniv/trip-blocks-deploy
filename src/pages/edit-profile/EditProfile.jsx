@@ -4,15 +4,49 @@ import axiosInstance from '../../api/axiosInstance';
 
 import './EditProfile.css';
 
+// 백엔드 도메인
+const BACKEND_BASE_URL =
+  import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080';
+
+// 프론트 배포 base 경로 (예: "/trip-blocks-deploy/")
+const FRONT_BASE_URL = import.meta.env.BASE_URL;
+
+function resolveImageUrl(path) {
+  // 1) 값이 없으면 기본 프로필 이미지
+  if (!path) return `${FRONT_BASE_URL}images/profiles/profile1.png`;
+
+  // 2) 백엔드에서 잘못 온 경우 (".png.png") 방어
+  if (path.endsWith('.png.png')) {
+    path = path.replace(/\.png\.png$/, '.png');
+  }
+
+  // 3) 업로드된 이미지: 절대 URL 또는 백엔드 상대경로
+  if (path.startsWith('http')) {
+    return path;
+  }
+
+  if (path.startsWith('/uploads')) {
+    return `${BACKEND_BASE_URL}${path}`;
+  }
+
+  // 4) 그 외는 public 정적 리소스(/images/profiles/...) 기준
+  //    "/images/..." → "<BASE_URL>images/..."
+  return `${FRONT_BASE_URL}${path.replace(/^\//, '')}`;
+}
+
 export default function EditProfile() {
   const [nickName, setNickName] = useState('');
-  const [profileImage, setProfileImage] = useState('/images/profiles/profile1.png');
-  const BACKEND_BASE_URL =
-    import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080';
+
+  // 기본 프로필 이미지 (배포 base 포함)
+  const [profileImage, setProfileImage] = useState(
+    `${FRONT_BASE_URL}images/profiles/profile1.png`
+  );
+
   const navigate = useNavigate();
 
-  // 기본 이미지 중 어떤 걸 선택했는지(파일명만)
-  const [selectedProfileImage, setSelectedProfileImage] = useState(null); // e.g. "profile1.png"
+  // 기본 이미지 중 어떤 걸 선택했는지
+  // "/images/profiles/profile1.png" 처럼 전체 경로를 저장
+  const [selectedProfileImage, setSelectedProfileImage] = useState(null);
 
   // 업로드한 실제 파일
   const [uploadedFile, setUploadedFile] = useState(null);
@@ -27,7 +61,7 @@ export default function EditProfile() {
         setNickName(res.data.nickName);
 
         if (res.data.userProfileImage) {
-          const imgPath = res.data.userProfileImage;   // 서버에 저장된 경로 그대로
+          const imgPath = res.data.userProfileImage; // 서버 경로
           setProfileImage(resolveImageUrl(imgPath));
           setSelectedProfileImage(imgPath);
           setUploadedFile(null);
@@ -43,9 +77,11 @@ export default function EditProfile() {
   const handleSelectDefaultProfile = (fileName) => {
     const fullPath = `/images/profiles/${fileName}`;
 
-    setProfileImage(fullPath);             // 화면에 보여줄 이미지
-    setSelectedProfileImage(fullPath);    // 서버에 보낼 값 (전체 경로)
-    setUploadedFile(null);                // 업로드 파일 사용 안 함
+    // 화면에 보여줄 건 base까지 붙인 URL
+    setProfileImage(resolveImageUrl(fullPath));
+    // 서버로 보낼 값은 "/images/profiles/profile1.png" 그대로
+    setSelectedProfileImage(fullPath);
+    setUploadedFile(null);
   };
 
   // 플러스 버튼 눌렀을 때 숨겨진 파일 input 열기
@@ -67,33 +103,18 @@ export default function EditProfile() {
     setSelectedProfileImage(null); // 기본 이미지 선택 해제
   };
 
-  function resolveImageUrl(path) {
-    if (!path) return '/images/profiles/profile1.png';
-
-    if (path.endsWith('.png.png')) {
-      path = path.replace(/\.png\.png$/, '.png');
-    }
-    // 백엔드가 업로드 이미지는 절대 URL로 보내줌
-    if (path.startsWith('http')) return path;
-
-
-    // 나머지는 public 정적 리소스 경로 (/images/profiles/...)
-    return path;
-  }
-
   const handleSave = async () => {
     try {
       const formData = new FormData();
       formData.append('nickName', nickName);
 
       if (uploadedFile) {
-        // 🔹 명세: uploadedProfileImage
+        // 업로드한 파일 보냄
         formData.append('uploadedProfileImage', uploadedFile);
       } else if (selectedProfileImage) {
-        // 🔹 명세: selectedProfileImage (이제는 "파일명"이 아니라 "전체 경로")
+        // "/images/profiles/profile1.png" 같은 전체 경로 보냄
         formData.append('selectedProfileImage', selectedProfileImage);
       }
-      // 둘 다 없으면 nickName만 전송
 
       const res = await axiosInstance.put('/api/user-profile', formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
@@ -124,28 +145,44 @@ export default function EditProfile() {
             className="profile-select-btn"
             onClick={() => handleSelectDefaultProfile('profile1.png')}
           >
-            <img className="profile-select-img" src="/images/profiles/profile1.png" alt="profile1" />
+            <img
+              className="profile-select-img"
+              src={`${FRONT_BASE_URL}images/profiles/profile1.png`}
+              alt="profile1"
+            />
           </button>
           <button
             type="button"
             className="profile-select-btn"
             onClick={() => handleSelectDefaultProfile('profile2.png')}
           >
-            <img className="profile-select-img" src="/images/profiles/profile2.png" alt="profile2" />
+            <img
+              className="profile-select-img"
+              src={`${FRONT_BASE_URL}images/profiles/profile2.png`}
+              alt="profile2"
+            />
           </button>
           <button
             type="button"
             className="profile-select-btn"
             onClick={() => handleSelectDefaultProfile('profile3.png')}
           >
-            <img className="profile-select-img" src="/images/profiles/profile3.png" alt="profile3" />
+            <img
+              className="profile-select-img"
+              src={`${FRONT_BASE_URL}images/profiles/profile3.png`}
+              alt="profile3"
+            />
           </button>
           <button
             type="button"
             className="profile-select-btn"
             onClick={() => handleSelectDefaultProfile('profile4.png')}
           >
-            <img className="profile-select-img" src="/images/profiles/profile4.png" alt="profile4" />
+            <img
+              className="profile-select-img"
+              src={`${FRONT_BASE_URL}images/profiles/profile4.png`}
+              alt="profile4"
+            />
           </button>
 
           {/* 플러스 버튼: 파일 업로드 */}
@@ -156,7 +193,7 @@ export default function EditProfile() {
           >
             <img
               className="profile-plus-img"
-              src="/icons/plus-icon-gray.png"
+              src={`${FRONT_BASE_URL}icons/plus-icon-gray.png`}
               alt="upload"
             />
           </button>
@@ -197,12 +234,11 @@ export default function EditProfile() {
         </button>
       </div>
 
-      <button className='goto-delete-account-btn'>
+      <button className="goto-delete-account-btn">
         <Link to="/delete-account">
           회원 탈퇴
         </Link>
       </button>
-
     </div>
   );
 }

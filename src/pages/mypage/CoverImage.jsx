@@ -5,19 +5,21 @@ import axiosInstance from "../../api/axiosInstance.js";
 const BACKEND_BASE_URL =
   import.meta.env.VITE_API_BASE_URL || "http://localhost:8080";
 
+// 이미지 경로 자동 변환 함수
 function resolveCoverUrl(path) {
-  if (!path) return "/images/covers/cover1.jpg";
+  // 1️⃣ 값이 없으면 → 기본 커버 이미지 (프론트 public)
+  if (!path) return `${import.meta.env.BASE_URL}images/covers/cover1.jpg`;
 
-  // 이미 절대 URL이면 그대로 사용
+  // 2️⃣ 외부 URL이면 그대로 사용
   if (path.startsWith("http")) return path;
 
-  // 업로드된 커버 이미지인 경우 → 백엔드 도메인 붙이기
+  // 3️⃣ 백엔드에서 제공한 업로드 이미지라면
   if (path.startsWith("/uploads")) {
     return `${BACKEND_BASE_URL}${path}`;
   }
 
-  // 기본 커버(/images/covers/cover1.jpg 같은 것)는 프론트 public이라 그대로
-  return path;
+  // 4️⃣ 프론트 public 폴더에 있는 이미지라면
+  return `${import.meta.env.BASE_URL}${path.replace(/^\//, "")}`;
 }
 
 function CoverImage() {
