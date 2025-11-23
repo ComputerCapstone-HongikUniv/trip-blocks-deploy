@@ -1,10 +1,12 @@
 import './ThemeOptioins.css';
 
 export default function ThemeOptioins({ theme, setTheme }) {
+  const baseUrl = import.meta.env.BASE_URL || '/';
+
   const themes = [
-    { id: 1, label: "Mono", image: "/images/themes/theme1.png", info: "모든 일정이 단색으로 생성됩니다." },
-    { id: 2, label: "By Source", image: "/images/themes/theme2.png", info: "장소를 검색하여 추가한 일정과 내가 직접 추가한 일정으로 구분됩니다." },
-    { id: 3, label: "Category", image: "/images/themes/theme3.png", info: "명소,  음식점, 카페, 직접 추가한 일정 등이 모두 구분됩니다." },
+    { id: 1, label: "Mono", image: `${baseUrl}images/themes/theme1.png`, info: "모든 일정이 단색으로 생성됩니다." },
+    { id: 2, label: "By Source", image: `${baseUrl}images/themes/theme1.png`, info: "장소를 검색하여 추가한 일정과 내가 직접 추가한 일정으로 구분됩니다." },
+    { id: 3, label: "Category", image: `${baseUrl}images/themes/theme3.png`, info: "명소,  음식점, 카페, 직접 추가한 일정 등이 모두 구분됩니다." },
   ];
 
   const selectedTheme = themes.find((t) => t.id === theme);
