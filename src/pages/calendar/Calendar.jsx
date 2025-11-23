@@ -285,6 +285,8 @@ export default function Calendar() {
           setMakeGEventMode={setMakeGEventMode}
           setSelectedPlaceForGEvent={setSelectedPlaceForGEvent}
           onSearchRequest={forceSearch}
+          selectedPlaceId={selectedPlaceId}
+          setSelectedPlaceId={setSelectedPlaceId}
         />
 
         {/* 캘린더 / 지도 뷰 */}
