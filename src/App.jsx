@@ -21,7 +21,8 @@ const LIBRARIES = ["places", "marker"];
 
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter
+      basename="/trip-blocks-deploy">
       <LoadScript
         id="google-map-script"
         googleMapsApiKey={API_KEY}
