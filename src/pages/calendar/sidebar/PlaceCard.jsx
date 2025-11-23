@@ -65,10 +65,11 @@ export default function PlaceCard({
           }
         );
       } else {
-        // ❓ 북마크 해제 부분은 명세 안 바뀌었다고 가정
-        // 기존처럼 쿼리 파라미터 / 혹은 백엔드 명세에 맞게만 유지하면 돼
         await axiosInstance.delete(
-          `/api/calendars/${calendarId}/places?placeId=${place.placeId}`
+          `/api/calendars/${calendarId}/places`,
+          {
+            placeId: place.placeId
+          }
         );
       }
 
