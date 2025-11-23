@@ -107,6 +107,7 @@ function SignUpPage() {
       });
 
       const { isDuplicatedId, message } = response.data;
+      console.log(response.data);
 
       // 백엔드에서 준 message를 그대로 쓰되,
       // 혹시 message가 비어 있으면 우리 쪽 기본 문구 사용
