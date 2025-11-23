@@ -23,7 +23,7 @@ function resolveCoverUrl(path) {
 }
 
 function CoverImage() {
-  const [coverUrl, setCoverUrl] = useState("/images/covers/cover1.jpg"); // 기본 배경
+  const [coverUrl, setCoverUrl] = useState("images/covers/cover1.jpg"); // 기본 배경
 
   useEffect(() => {
     const fetchCover = async () => {

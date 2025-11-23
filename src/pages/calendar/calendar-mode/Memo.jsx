@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import memoIcon from '/icons/memo-icon.svg';
 import './Memo.css';
 
 export default function Memo({
@@ -27,7 +28,7 @@ export default function Memo({
 
   return (
     <div className="memo-container">
-      <img className="g-modal-icon-img" src='/icons/memo-icon.svg' />
+      <img className="g-modal-icon-img" src={memoIcon} />
       <textarea
         ref={textareaRef}
         className={`memo ${memoEditMode ? "memo--active" : ""}`}
@@ -36,7 +37,7 @@ export default function Memo({
         onClick={() => setMemoEditMode(true)}
         onChange={saveInputMemo}
         onBlur={saveMemo}
-        value={inputMemo}
+        value={inputMemo || ''}
       />
     </div>
   );

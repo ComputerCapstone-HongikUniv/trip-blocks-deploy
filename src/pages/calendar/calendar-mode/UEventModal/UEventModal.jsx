@@ -19,8 +19,8 @@ export default function UEventModal({
   const [startTime, setStartTime] = useState("");
   const [endDate, setEndDate] = useState("");
   const [endTime, setEndTime] = useState("");
-  const [inputTitle, setInputTitle] = useState(eventDetails.eventName);
-  const [inputMemo, setInputMemo] = useState(eventDetails.comment);
+  const [inputTitle, setInputTitle] = useState(eventDetails.eventName || "");
+  const [inputMemo, setInputMemo] = useState(eventDetails.comment || "");
 
   useEffect(() => {
     const s = splitDateTime(eventDetails.startTime);

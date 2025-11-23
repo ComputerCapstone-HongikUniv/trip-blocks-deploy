@@ -3,6 +3,7 @@ import Logo from "../../assets/brand/logo.png";
 import { formatKoreanDate } from '../../utils/formatDate.js';
 import ProfileBtn from '../Header/ProfileBtn';
 import CalendarDropdown from '../Header/CalendarDropdown.jsx';
+import sidebarIcon from '/icons/sidebar-icon.png';
 import './CalendarHeader.css';
 
 export default function CalendarHeader({
@@ -21,7 +22,9 @@ export default function CalendarHeader({
             setSideOpen(prev => !prev);
           }}
         >
-          <img className="sidebar-img" src="/icons/sidebar-icon.png" />
+          <img className="sidebar-img"
+            src={sidebarIcon}
+            alt="사이드바 열기/닫기" />
         </button>
 
         <Link to="/mypage" className="calendar-logo-container">

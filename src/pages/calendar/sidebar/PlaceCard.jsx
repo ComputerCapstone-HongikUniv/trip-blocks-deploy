@@ -5,13 +5,22 @@ import { getPhotoUrl } from '../../../api/googleMapApi.js';
 import { getCategoryKor } from '../../../utils/category';
 import './PlaceCard.css';
 import './PlaceDetail.css';
+import heartFilledIcon from '/icons/heart-filled.svg';
+import heartOutlineIcon from '/icons/heart-outline.svg';
+import plusGrayIcon from '/icons/plus-icon-gray.png';
+import downArrowIcon from '/icons/down-arrow.png';
+import locationIcon from '/icons/location-icon.svg';
+import clockIcon from '/icons/clock-icon.svg';
+import phoneIcon from '/icons/phone-icon.svg';
 
 export default function PlaceCard({
   place,
   calendarId,
   fetchBookmarkedPlaces,
   setMakeGEventMode,
-  setSelectedPlaceForGEvent
+  setSelectedPlaceForGEvent,
+  selectedPlaceId,
+  setSelectedPlaceId,
 }) {
   const [isPlaceCardOpen, setIsPlaceCardOpen] = useState(false); // 이 카드만 열려 있는지
   const [detail, setDetail] = useState(null);  // 이 카드의 상세 정보
@@ -88,6 +97,7 @@ export default function PlaceCard({
       );
       setSelectedPlaceForGEvent(response.data);
       setMakeGEventMode(true);
+      setSelectedPlaceId(place.placeId);
     } catch (err) {
       console.error('장소 상세 정보 불러오기 실패(이벤트 만들기):', err);
     }
@@ -128,7 +138,8 @@ export default function PlaceCard({
     <>
       {!isPlaceCardOpen ? (
         // 기본 카드 모드
-        <div className="place-card-closed"
+        <div className={`place-card-closed ${selectedPlaceId === place.placeId ? "place-card-closed--active" : ""
+          }`}
           draggable="true"
           onClick={handleCardOpen}
           onDragStart={handleDragStart}
@@ -167,11 +178,7 @@ export default function PlaceCard({
               <div className="bookmark-make-event-container">
                 <button className="bookmark-btn" onClick={handleBookmarkClick}>
                   <img
-                    src={
-                      bookmarked
-                        ? '/icons/heart-filled.svg'
-                        : '/icons/heart-outline.svg'
-                    }
+                    src={bookmarked ? heartFilledIcon : heartOutlineIcon}
                     alt="bookmark"
                     className="bookmark-icon-img"
                   />
@@ -182,19 +189,24 @@ export default function PlaceCard({
                 >
                   <img
                     className="plus-btn-img"
-                    src="/icons/plus-icon-gray.png"
+                    src={plusGrayIcon}
                     alt="plus"
                   />
                 </button>
                 <button onClick={handleCardOpen}>
-                  <img className="place-detail-open-img" src="/icons/down-arrow.png" alt="장소 상세 정보 닫기" />
+                  <img className="place-detail-open-img"
+                    src={downArrowIcon}
+                    alt="장소 상세 정보 닫기" />
                 </button>
               </div>
             </div>
           </div>
         </div>
       ) : (
-        <div className="place-detail-container">
+        <div
+          className={`place-detail-container ${selectedPlaceId === place.placeId ? "place-detail-container--active" : ""
+            }`}
+        >
           {photoUrl ? (
             <img
               className="place-detail-img"
@@ -231,21 +243,35 @@ export default function PlaceCard({
 
                 <div className="place-detail-bottom">
                   <div className="place-detail-row">
-                    <img className="place-detail-icon-img" src='/icons/location-icon.svg' />
+                    <img className="place-detail-icon-img"
+                      src={locationIcon}
+                      alt="주소 아이콘"
+                    />
                     <span>{display.address}</span>
                   </div>
 
                   <div className="place-detail-row">
-                    <img className="place-detail-icon-img" src="/icons/clock-icon.svg" />
+                    <img className="place-detail-icon-img"
+                      src={clockIcon}
+                      alt="영업시간 아이콘"
+                    />
                     <div className="place-detail-opening-hours">
-                      {display.formattedOpeningHours.map((line, index) => (
-                        <div key={index}>{line}</div>
-                      ))}
+                      {Array.isArray(display.formattedOpeningHours) &&
+                        display.formattedOpeningHours.length > 0 ? (
+                        display.formattedOpeningHours.map((line, index) => (
+                          <div key={index}>{line}</div>
+                        ))
+                      ) : (
+                        <div>영업시간 정보 없음</div>
+                      )}
                     </div>
                   </div>
 
                   <div className="place-detail-row">
-                    <img className="place-detail-icon-img-phone" src='/icons/phone-icon.svg' />
+                    <img className="place-detail-icon-img-phone"
+                      src={phoneIcon}
+                      alt="전화번호 아이콘"
+                    />
                     <span>{display.phoneNumber}</span>
                   </div>
                 </div>
@@ -255,11 +281,7 @@ export default function PlaceCard({
                 <div className="detail-bookmark-make-event-container">
                   <button className="bookmark-btn" onClick={handleBookmarkClick}>
                     <img
-                      src={
-                        bookmarked
-                          ? '/icons/heart-filled.svg'
-                          : '/icons/heart-outline.svg'
-                      }
+                      src={bookmarked ? heartFilledIcon : heartOutlineIcon}
                       alt="bookmark"
                       className="bookmark-icon-img"
                     />
@@ -269,12 +291,14 @@ export default function PlaceCard({
                   >
                     <img
                       className="plus-btn-img"
-                      src="/icons/plus-icon-gray.png"
+                      src={plusGrayIcon}
                       alt="plus"
                     />
                   </button>
                   <button onClick={handleCardOpen}>
-                    <img className="place-detail-close-img" src="/icons/down-arrow.png" alt="장소 상세 정보 닫기" />
+                    <img className="place-detail-close-img"
+                      src={downArrowIcon}
+                      alt="장소 상세 정보 닫기" />
                   </button>
                 </div>
               </>

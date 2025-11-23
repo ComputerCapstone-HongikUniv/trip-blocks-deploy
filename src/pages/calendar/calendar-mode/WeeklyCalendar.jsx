@@ -864,10 +864,13 @@ export default function WeeklyCalendar({
             googleEvent={selectedEventDetail?.googleEvent}
             headerInfo={headerInfo}
             onEventUpdated={(updated) => {
+              // 🔹 문자열로 통일해서 비교
+              const updatedId = String(updated.eventId);
+
               // 삭제인 경우
               if (updated._deleted) {
                 setEvents(prev =>
-                  prev.filter(ev => ev.eventId !== updated.eventId)
+                  prev.filter(ev => String(ev.eventId) !== updatedId)
                 );
                 if (typeof refreshWarnings === 'function') {
                   refreshWarnings();
@@ -878,7 +881,9 @@ export default function WeeklyCalendar({
               // 일반 업데이트인 경우
               setEvents(prev =>
                 prev.map(ev =>
-                  ev.eventId === updated.eventId ? { ...ev, ...updated } : ev
+                  String(ev.eventId) === updatedId
+                    ? { ...ev, ...updated }
+                    : ev
                 )
               );
               setSelectedEventDetail(updated);

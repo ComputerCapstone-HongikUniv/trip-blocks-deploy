@@ -31,7 +31,7 @@ export default function AccommodationSearch({ inputText, setInputText, accommoda
         onClick={accommodationSearch}
         className="accommodation-search-button"
       >
-        <img className="search-icon" src="/icons/search-icon.svg"></img>
+        <img className="search-icon" src="icons/search-icon.svg"></img>
       </button>
     </div>
   );

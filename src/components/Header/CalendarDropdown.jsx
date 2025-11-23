@@ -1,6 +1,7 @@
 // src/components/MenuButton.jsx
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import kebabIcon from "/icons/kebab-menu.svg";
 import "./MypageDropdown.css";
 
 export default function CalendarDropdown({ calendarId, onShare }) {
@@ -25,7 +26,7 @@ export default function CalendarDropdown({ calendarId, onShare }) {
   return (
     <div className="menu-wrapper" ref={wrapperRef}>
       <button className="menu-icon-btn" onClick={toggleMenu}>
-        <img className="menu-icon-img" src="/icons/kebab-menu.svg" />
+        <img className="menu-icon-img" src={kebabIcon} />
       </button>
 
       {open && (

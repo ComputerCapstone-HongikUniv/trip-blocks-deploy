@@ -461,7 +461,7 @@ export default function RouteMode() {
                             >
                               <img
                                 className="transport-select-icon-img"
-                                src="/icons/down-arrow.png"
+                                src="icons/down-arrow.png"
                                 alt="이동수단 선택"
                               />
                             </button>

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import editIcon from '/icons/edit-icon.png';
 import './EventModalTitle.css';
 
 export default function EventModalTitle({
@@ -34,7 +35,7 @@ export default function EventModalTitle({
             setTitleEditMode(true);
           }}>
           <img className="g-modal-icon-img"
-            src='/icons/edit-icon.png' />
+            src={editIcon} />
         </button >)}
       {titleEditMode && (
         <button onClick={() => {

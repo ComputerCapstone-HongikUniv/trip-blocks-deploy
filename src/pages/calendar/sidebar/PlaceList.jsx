@@ -7,7 +7,9 @@ export default function PlaceList({
   calendarId,
   fetchBookmarkedPlaces,
   setMakeGEventMode,
-  setSelectedPlaceForGEvent
+  setSelectedPlaceForGEvent,
+  selectedPlaceId,
+  setSelectedPlaceId
 }) {
   return (
     <div className="place-list">
@@ -20,6 +22,8 @@ export default function PlaceList({
             fetchBookmarkedPlaces={fetchBookmarkedPlaces}
             setMakeGEventMode={setMakeGEventMode}
             setSelectedPlaceForGEvent={setSelectedPlaceForGEvent}
+            selectedPlaceId={selectedPlaceId}
+            setSelectedPlaceId={setSelectedPlaceId}
           />
         );
       })}

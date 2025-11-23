@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import Categories from './Categories';
 import PlaceList from "./PlaceList";
+import searchIcon from "/icons/search-icon.svg";
 import './CalendarSideBar.css';
 
 export default function CalendarSideBar({
@@ -21,6 +22,7 @@ export default function CalendarSideBar({
   onSearchRequest
 }) {
   const [inputText, setInputText] = useState('');   // 입력된 값
+  const [selectedPlaceId, setSelectedPlaceId] = useState(null);
   const prevModeRef = useRef(recomOrSearchOrSave);
   useEffect(() => {
     prevModeRef.current = recomOrSearchOrSave;
@@ -32,6 +34,7 @@ export default function CalendarSideBar({
     // 사용자가 입력창을 완전히 지웠을 때
     if (value.trim() === "") {
       setRecomOrSearchOrSave("recommend");
+      setSelectedPlaceId(null);   // 검색어 지우면 선택도 해제
     }
   }
 
@@ -67,7 +70,10 @@ export default function CalendarSideBar({
                 ? "search-btn--active"
                 : ""
               }`}
-            onClick={() => setRecomOrSearchOrSave("recommend")}
+            onClick={() => {
+              setRecomOrSearchOrSave("recommend");
+              setSelectedPlaceId(null);   // 🔹 탭 전환 시 선택 해제
+            }}
           >
             검색
           </button>
@@ -76,7 +82,10 @@ export default function CalendarSideBar({
               ${recomOrSearchOrSave === "save" ?
                 "save-btn--active" : ""
               }`}
-            onClick={() => setRecomOrSearchOrSave("save")}
+            onClick={() => {
+              setRecomOrSearchOrSave("save");
+              setSelectedPlaceId(null);   // 🔹 저장 탭으로 갈 때도 선택 초기화
+            }}
           >
             저장
           </button>
@@ -86,7 +95,9 @@ export default function CalendarSideBar({
         {(recomOrSearchOrSave === "recommend" || recomOrSearchOrSave === "search") && (
           <>
             <div className="place-search-input-container">
-              <img className="place-search-icon" src="/icons/search-icon.svg" />
+              <img className="place-search-icon"
+                src={searchIcon}
+                alt="검색 아이콘" />
               <input
                 placeholder="장소 검색"
                 size={38}
@@ -112,6 +123,8 @@ export default function CalendarSideBar({
           fetchBookmarkedPlaces={fetchBookmarkedPlaces}
           setMakeGEventMode={setMakeGEventMode}
           setSelectedPlaceForGEvent={setSelectedPlaceForGEvent}
+          selectedPlaceId={selectedPlaceId}
+          setSelectedPlaceId={setSelectedPlaceId}
         />
 
       </div>

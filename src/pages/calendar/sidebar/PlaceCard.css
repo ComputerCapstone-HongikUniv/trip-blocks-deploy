@@ -8,6 +8,11 @@
   align-items: flex-end;
 }
 
+/* 선택된 경우 */
+.place-card-closed--active {
+  border: 1px solid #FF5E29;
+}
+
 .place-card-closed:hover {
   cursor: pointer;
 }

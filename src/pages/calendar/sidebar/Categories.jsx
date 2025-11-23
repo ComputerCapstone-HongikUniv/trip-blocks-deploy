@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import sortIcon from "/icons/sort-icon.png";
 import './Categories.css';
 import './SortDropdown.css';
 
@@ -70,7 +71,7 @@ export default function Categories({
           {/* 선택된 정렬이 없을 때 */}
           {!sortType && (
             <button className="sort-btn" onClick={toggleMenu}>
-              <img className="sort-btn-img" src="/icons/sort-icon.png" />
+              <img className="sort-btn-img" src={sortIcon} alt="정렬" />
             </button>
           )}
 

@@ -6,6 +6,10 @@
   margin-bottom: 8px;
 }
 
+.place-detail-container--active {
+  border: 1px solid #FF5E29;
+}
+
 .place-detail-container:hover {
   cursor: pointer;
 }

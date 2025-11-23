@@ -2,6 +2,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import axiosInstance from "../../api/axiosInstance.js";   // ★ 경로는 프로젝트 구조에 맞게 조정
+import kebabIcon from '/icons/kebab-menu.svg';
 import "./MypageDropdown.css";
 
 export default function MypageDropdown() {
@@ -55,7 +56,9 @@ export default function MypageDropdown() {
         className="menu-icon-btn"
         onClick={toggleMenu}
       >
-        <img className="menu-icon-img" src="icons/kebab-menu.svg" alt="메뉴" />
+        <img className="menu-icon-img"
+          src={kebabIcon}
+          alt="메뉴" />
       </button>
 
       {open && (

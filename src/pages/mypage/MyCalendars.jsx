@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../api/axiosInstance";
+import kebabIcon from "/icons/kebab-menu.svg";
 import "./MyCalendars.css";
 
 export function MyCalendars({ calendars }) {
@@ -91,7 +92,7 @@ export function MyCalendars({ calendars }) {
               >
                 <img
                   className="menu-icon-img"
-                  src="icons/kebab-menu.svg"
+                  src={kebabIcon}
                   alt="메뉴"
                 />
               </button>

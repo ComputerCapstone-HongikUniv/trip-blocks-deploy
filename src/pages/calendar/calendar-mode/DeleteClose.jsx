@@ -1,4 +1,6 @@
 import axiosInstance from '../../../api/axiosInstance';
+import deleteIcon from '/icons/Delete-outline.svg';
+import closeIcon from '/icons/Close-light.svg';
 
 export default function DeleteClose({
   calendarId, eventId, closeModal, onEventUpdated
@@ -29,11 +31,11 @@ export default function DeleteClose({
       <button className="event-delete-btn"
         onClick={handleDeleteEvent}
       >
-        <img className="delete-img" src='/icons/Delete-outline.svg' alt='삭제' />
+        <img className="delete-img" src={deleteIcon} alt='삭제' />
       </button>
       <button className="event-close-btn"
         onClick={closeModal}>
-        <img className="delete-img" src='/icons/Close-light.svg' alt='닫기' />
+        <img className="delete-img" src={closeIcon} alt='닫기' />
       </button>
     </div>
   );

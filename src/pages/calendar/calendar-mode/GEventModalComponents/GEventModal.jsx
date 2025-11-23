@@ -37,7 +37,7 @@ export default function GEventModal({
   const [nextTransportation, setNextTransportation] = useState(
     eventDetails.nextTransportation
   );
-  const [inputMemo, setInputMemo] = useState(eventDetails.comment);
+  const [inputMemo, setInputMemo] = useState(eventDetails.comment || "");
 
   useEffect(() => {       // 날짜와 시간 분리
     const s = splitDateTime(eventDetails.startTime);

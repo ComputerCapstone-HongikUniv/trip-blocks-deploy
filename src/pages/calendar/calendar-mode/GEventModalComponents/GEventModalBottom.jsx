@@ -1,5 +1,10 @@
 import { useState, useEffect, useRef } from 'react';
 import Memo from '../Memo';
+import locationIcon from '/icons/location-icon.svg';
+import clockIcon from '/icons/clock-icon.svg';
+import downArrowIcon from '/icons/down-arrow.png';
+import phoneIcon from '/icons/phone-icon.svg';
+import copyIcon from '/icons/copy-icon.svg';
 import './GEventModalBottom.css';
 
 export default function GEventModalBottom({
@@ -22,11 +27,11 @@ export default function GEventModalBottom({
       />
 
       <div className="address-container">
-        <img className="g-modal-icon-img" src='/icons/location-icon.svg' />
+        <img className="g-modal-icon-img" src={locationIcon} alt="위치" />
         <span>{eventDetails.address}</span>
       </div>
       <div className="open-hour-container" onClick={() => setIsOpeningHoursOpen(prev => !prev)}>
-        <img className="g-modal-icon-img" src="/icons/clock-icon.svg" />
+        <img className="g-modal-icon-img" src={clockIcon} alt="영업시간" />
 
         <span>
           {openingHoursForEventDay
@@ -36,7 +41,7 @@ export default function GEventModalBottom({
 
         <img
           className={`g-modal-icon-img down-arrow ${isOpeningHoursOpen ? "down-arrow--open" : ""}`}
-          src="/icons/down-arrow.png"
+          src={downArrowIcon}
           alt="영업시간 더보기"
         />
       </div>
@@ -57,11 +62,11 @@ export default function GEventModalBottom({
         </ul>
       )}
       <div className="phone-number-container">
-        <img className="g-modal-icon-img" src='/icons/phone-icon.svg' />
+        <img className="g-modal-icon-img" src={phoneIcon} alt="전화번호" />
         <span className="phone-number">
           {eventDetails.phoneNumber}
           <button className="copy-btn">
-            <img className="copy-img" src='/icons/copy-icon.svg' />
+            <img className="copy-img" src={copyIcon} alt="복사" />
           </button>
         </span>
 

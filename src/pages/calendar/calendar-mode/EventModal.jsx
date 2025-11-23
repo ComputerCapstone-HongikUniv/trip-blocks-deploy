@@ -6,6 +6,8 @@ dayjs.locale('ko');
 import { getHexColor } from '../../../utils/colorPalette.js';
 import GEventModal from './GEventModalComponents/GEventModal.jsx';
 import UEventModal from './UEventModal/UEventModal.jsx';
+import deleteIcon from '/icons/Delete-outline.svg';
+import closeIcon from '/icons/Close-light.svg';
 import './EventModal.css'
 
 export default function EventModal({
@@ -25,10 +27,10 @@ export default function EventModal({
       <div className="g-event-modal" onClick={(e) => e.stopPropagation()}>
         <div className="delete-close-btn-container">
           <button>
-            <img className="delete-img" src='/icons/Delete-outline.svg' alt='삭제' />
+            <img className="delete-img" src={deleteIcon} alt='삭제' />
           </button>
           <button onClick={closeModal}>
-            <img className="delete-img" src='/icons/Close-light.svg' alt='닫기' />
+            <img className="delete-img" src={closeIcon} alt='닫기' />
           </button>
         </div>
         <div className="g-event-modal-loading">
