@@ -1,0 +1,39 @@
+.memo-container {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  margin-bottom: 16px;
+  font-size: 15px;
+}
+
+.memo {
+  flex: 1;
+  border: 1px solid gainsboro;
+  border-radius: 8px;
+  padding: 10px 10px 0 10px;
+  font-size: 15px;
+  /* background-color: #ffccb5; */
+}
+
+.memo:hover {
+  margin-top: 0px;
+  margin-left: 0px;
+  padding: 10px 10px 0 10px;
+  cursor: pointer;
+}
+
+.memo--active {
+  margin-top: 0px;
+  margin-left: 0px;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 10px 0 10px;
+  border: 1px solid aliceblue;
+  background-color: aliceblue;
+}
+
+.memo:focus {
+  outline: none;
+  border-bottom: 1px solid #2196f3;
+  box-shadow: none;
+}

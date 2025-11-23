@@ -1,0 +1,56 @@
+.calender-container {
+  position: relative;
+  min-height: 100vh;
+  /* 화면 전체 높이 차지 */
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  color: darkslategray;
+}
+
+/* 기본: 왼쪽에서 시작 */
+.calender-contents {
+  position: relative;
+  flex: 1;
+  display: flex;
+  /* flex-direction: column; */
+  min-height: 0;
+  /* 내부 flex 자식이 높이 100%/스크롤 가능하도록 */
+  margin-left: 0;
+  transition: margin-left 0.1s ease;
+}
+
+/* 사이드바 열렸을 때: 본문을 오른쪽으로 360px 밀기 */
+.calender-contents--shifted {
+  position: relative;
+  margin-left: 360px;
+}
+
+/* 캘린더/지도 영역 컨테이너 */
+.weekly-calender-map-view {
+  padding: 0 12px 8px 12px;
+  flex: 1;
+  min-height: 0;
+  /* flex 컨테이너에서 중요 */
+  display: flex;
+  /* FullCalendar가 100%로 찰 수 있도록 */
+  flex-direction: column;
+  /* overflow: hidden; */
+}
+
+.detail-rout-btn {
+  position: absolute;
+  bottom: 24px;
+  right: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 8px 16px;
+  border-radius: 50px;
+  background-color: #1B1B1B;
+  color: white;
+  z-index: 30;
+}
+
+.detail-rout-btn:hover {
+  background-color: #FF5E29;
+}

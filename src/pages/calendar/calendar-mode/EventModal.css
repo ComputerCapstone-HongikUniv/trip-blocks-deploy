@@ -1,0 +1,74 @@
+.g-event-modal {
+  background: white;
+  border-radius: 20px;
+  padding: 0;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  max-width: 520px;
+  min-width: 450px;
+  overflow: hidden;
+  position: relative;
+}
+
+.delete-close-btn-container {
+  position: absolute;
+  top: 16px;
+  right: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.delete-close-btn-container button {
+  background-color: #00000030;
+  padding: 8px 10px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.delete-img {
+  height: 16px;
+}
+
+
+.g-event-modal-img {
+  height: 340px;
+  width: 100%;
+  object-fit: cover;
+}
+
+.g-event-modal-info {
+  padding: 20px 28px;
+}
+
+.g-event-modal-info .color-category {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 10px;
+}
+
+.g-event-modal-info .color {
+  background-color: #E4F7DA;
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  padding: 0;
+}
+
+.g-event-modal-info .category {
+  font-size: 14px;
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+.g-event-modal-info .rating-comment {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+  font-size: 14px;
+  font-weight: 300;
+  color: #515151;
+}

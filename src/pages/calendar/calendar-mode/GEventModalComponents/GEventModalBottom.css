@@ -1,0 +1,61 @@
+.address-container,
+.open-hour-container,
+.phone-number-container {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 16px;
+  font-size: 15px;
+}
+
+.g-modal-icon-img {
+  padding-top: 2px;
+  height: 20px;
+}
+
+.open-hours-list {
+  margin-top: 8px;
+  padding: 8px 12px;
+  background: #f7f7f7;
+  border-radius: 8px;
+  font-size: 13px;
+}
+
+.open-hours-item {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.open-hours-item:last-child {
+  margin-bottom: 0;
+}
+
+.open-hours-day {
+  font-weight: 600;
+}
+
+.down-arrow {
+  transition: transform 0.2s ease;
+}
+
+.down-arrow--open {
+  transform: rotate(180deg);
+}
+
+.phone-number {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.copy-btn {
+  padding: 2px 4px;
+  display: flex;
+  align-items: center;
+  background: none;
+}
+
+.copy-img {
+  height: 16px;
+}

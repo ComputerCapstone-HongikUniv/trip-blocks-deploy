@@ -1,0 +1,33 @@
+.travel-option-group {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.travel-card {
+  width: 200px;
+  height: 60px;
+  border: 1.5px solid #ddd;
+  border-radius: 8px;
+  padding: 10px 16px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  transition: 0.2s;
+
+  display: flex;
+  justify-content: center;
+  /* 가로 중앙 */
+  align-items: center;
+  /* 세로 중앙 */
+}
+
+.travel-card-selected {
+  border-color: #ff9800;
+  /* background-color: #fff3e0; */
+}
+
+.travel-option-radio {
+  /* 라디오 숨기고 카드 클릭되게 만들고 싶으면 */
+  display: none;
+}

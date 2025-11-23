@@ -1,0 +1,19 @@
+.setting-calendar-wrapper {
+  width: 520px;
+  /* background-color: aliceblue; */
+  margin: auto;
+  margin-top: 70px;
+  margin-bottom: 70px;
+}
+
+.setting-warning-wrapper {
+  margin-bottom: 70px;
+}
+
+.setting-button-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 70px;
+  padding-bottom: 100px;
+}

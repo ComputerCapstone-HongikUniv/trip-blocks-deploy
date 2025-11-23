@@ -1,0 +1,22 @@
+.success-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+
+  gap: 16px;
+  max-width: 400px;
+  margin: auto;
+}
+
+.congratulation-text {
+  font-size: 36px;
+  font-weight: 700;
+}
+
+.to-home-btn {
+  margin-top: 20px;
+  padding: 8px 20px;
+  text-align: center;
+}

@@ -1,0 +1,92 @@
+.place-detail-container {
+  background-color: white;
+  border: 1px solid #E9E9E9;
+  border-radius: 16px;
+  padding: 12px 14px;
+  margin-bottom: 8px;
+}
+
+.place-detail-container:hover {
+  cursor: pointer;
+}
+
+.place-detail-img {
+  height: 240px;
+  width: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 6px;
+}
+
+.place-detail-name {
+  margin: 0 0 6px 0;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.place-detail-category {
+  font-size: 12px;
+  color: #777777;
+  margin-bottom: 2px;
+}
+
+.place-detail-rating-review {
+  font-size: 13px;
+  margin-bottom: 12px;
+  color: #515151;
+}
+
+.place-detail-rating {
+  margin-right: 8px;
+}
+
+.place-detail-bottom {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.place-detail-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-size: 13px;
+}
+
+.place-detail-icon-img {
+  padding-top: 2px;
+  width: 20px;
+}
+
+.place-detail-opening-hours {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.place-detail-icon-img-phone {
+  padding-top: 2px;
+  padding-left: 3px;
+  width: 16px;
+}
+
+.detail-bookmark-make-event-container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  gap: 10px;
+  color: #515151;
+}
+
+.detail-bookmark-make-event-container button {
+  padding: 0;
+  background-color: #ffffff00;
+}
+
+.place-detail-close-img {
+  width: 15px;
+  transform: rotate(180deg);
+  margin-top: 5px;
+  margin-left: -1px;
+}

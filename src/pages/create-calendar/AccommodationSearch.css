@@ -1,0 +1,25 @@
+.accommodation-search {
+  display: flex;
+  align-items: center;
+}
+
+.accommodation-search-input {
+  height: 40px;
+  margin-right: 8px;
+  border-radius: 8px;
+  border: 1px solid lightgray;
+  padding: 0 0 0 16px;
+  margin-right: 8px;
+
+  flex-grow: 1;
+}
+
+.accommodation-search-button {
+  /* background-color: #ffffff; */
+  border-radius: 8px;
+  height: 44px;
+}
+
+.search-icon {
+  height: 20px;
+}

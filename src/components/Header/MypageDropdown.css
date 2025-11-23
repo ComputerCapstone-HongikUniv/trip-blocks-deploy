@@ -1,0 +1,52 @@
+/* src/components/MenuButton.css */
+
+.menu-wrapper {
+  position: relative;
+  /* 이 안을 기준으로 메뉴 위치시킴 */
+  display: inline-block;
+  margin-right: 12px;
+}
+
+.menu-icon-btn {
+  background-color: transparent;
+  border: none;
+  padding: 0 8px;
+}
+
+.menu-icon-img {
+  width: 20px;
+}
+
+.menu-icon-btn:hover {
+  border-radius: 4px;
+}
+
+/* 메뉴 박스 */
+.menu-panel {
+  position: absolute;
+  top: 100%;
+  /* 버튼 바로 아래 */
+  right: 0;
+  margin-top: 4px;
+  min-width: 180px;
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.16);
+  padding: 4px 0;
+  z-index: 10;
+}
+
+.menu-item {
+  width: 100%;
+  text-align: left;
+  padding: 8px 12px;
+  border: none;
+  background: none;
+  font-size: 13px;
+  font-weight: 400;
+  cursor: pointer;
+}
+
+.menu-item:hover {
+  background-color: #f5f5f5;
+}

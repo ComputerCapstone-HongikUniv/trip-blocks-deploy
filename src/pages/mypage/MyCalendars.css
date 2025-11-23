@@ -1,0 +1,92 @@
+.calendars-container {}
+
+.calandars-txt-container {
+  position: absolute;
+  bottom: 280px;
+  left: 24px;
+  right: 24px;
+
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
+.calandars-txt {
+  font-size: 48px;
+  color: white;
+  margin: 0;
+}
+
+.plus-icon-btn {
+  background-color: transparent;
+  margin-bottom: -4px;
+}
+
+.plus-icon {
+  width: 32px;
+}
+
+.calendar-card-container {
+  position: absolute;
+  bottom: 32px;
+  left: 24px;
+  right: 0px;
+  /* ⭐ 이거 추가해야 가로 공간이 인식됨 */
+  display: flex;
+  gap: 16px;
+  overflow: scroll;
+  scrollbar-width: none;
+  /* width: fit-content */
+}
+
+
+.calendar-card {
+  background-color: #F9F7E2;
+  border-radius: 24px;
+  border: 2px solid #ffffff80;
+  /* width: 180px; */
+  height: 180px;
+  padding: 24px 12px 24px 24px;
+  flex: 0 0 200px;
+}
+
+.calendar-card-up-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.calendar-card-title {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.calendar-card-date {
+  font-size: 14px;
+  color: #515151;
+  line-height: 1.6;
+}
+
+.calendar-delete-btn-wrapper {
+  position: relative;
+}
+
+.calendar-delete-btn {
+  position: absolute;
+  right: 14px;
+  top: 24px;
+  padding: 8px 16px;
+  width: 60px;
+  border-radius: 8px;
+  background-color: #fff;
+  /* 배경색이 있어야 그림자가 잘 보임 */
+  border: none;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  /* ← 그림자 추가 */
+}
+
+.calendar-delete-btn:hover {
+  background-color: #EDEDED;
+}

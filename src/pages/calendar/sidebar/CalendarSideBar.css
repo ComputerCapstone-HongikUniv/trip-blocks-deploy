@@ -1,0 +1,96 @@
+/* CalendarSideBar.css */
+
+/* 사이드바: 기본은 화면 밖 (왼쪽) */
+.calender-sidebar {
+  position: fixed;
+  top: 54px;
+  /* 헤더 높이만큼 아래로 (헤더 아래에 오도록) */
+  left: 0;
+  width: 360px;
+  height: calc(100vh - 54px);
+  border-radius: 0 16px 0 0;
+  background-color: #F5F5F5;
+
+  overflow: hidden;
+  /* 전체가 스크롤되지 않도록 */
+  display: flex;
+  /* 내부를 flex로 */
+
+  transform: translateX(-100%);
+  /* 완전히 왼쪽으로 숨김 */
+  transition: transform 0.3s ease;
+}
+
+/* 열렸을 때: 제자리로 슬라이드 인 */
+.calender-sidebar--open {
+  transform: translateX(0);
+}
+
+.calender-sidebar-inner {
+  padding: 16px;
+  /* 추가: 세로 flex 레이아웃 + 전체 높이 사용 */
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
+
+.search-save-options {
+  border-radius: 50px;
+  border: 1px solid #DDDDDD;
+  background: #ffffff;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+
+.search-save-btn {
+  flex: 1;
+  padding: 8px 8px;
+  width: 50%;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1;
+  color: #000;
+}
+
+.search-btn--active {
+  border: 1px solid #FF5E29;
+  border-radius: 50px 0 0 50px;
+  color: black;
+}
+
+.save-btn--active {
+  border: 1px solid #FF5E29;
+  border-radius: 0 50px 50px 0;
+  color: black;
+}
+
+/* 검색 인풋 */
+.place-search-input-container {
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 14px;
+  border: 1px solid lightgray;
+  border-radius: 20px;
+  background-color: white;
+  padding: 6px 12px 6px 16px;
+  display: flex;
+  align-items: center;
+}
+
+.place-search-icon {
+  height: 16px;
+  margin-right: 8px;
+}
+
+.place-search-input {
+  border: none;
+}
+
+.place-search-input:focus {
+  outline: none;
+  /* 기본 파란 테두리 제거 */
+}

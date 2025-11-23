@@ -1,0 +1,23 @@
+.my-page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 55px;
+}
+
+.logo-container {
+  margin: 0 0 0 32px;
+}
+
+.right-section {
+  /* background-color: aqua; */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.catchphrase {
+  color: #353535;
+  font-size: 96px;
+  margin: 0 0 0 24px;
+}

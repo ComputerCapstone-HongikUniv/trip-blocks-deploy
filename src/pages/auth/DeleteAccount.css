@@ -1,0 +1,27 @@
+.delete-account-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  max-width: 400px;
+  margin: auto;
+
+  gap: 16px;
+}
+
+.delete-account-text {
+  font-size: 36px;
+  font-weight: 700;
+}
+
+.delete-account-btn-container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 16px;
+}
+
+.delete-account-btn {
+  margin-top: 20px;
+}

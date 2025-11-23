@@ -1,0 +1,81 @@
+ .calender-header {
+   height: 54px;
+   display: flex;
+   align-items: center;
+   /* background-color: antiquewhite; */
+   justify-content: space-between;
+   z-index: 10;
+ }
+
+ .left-section {
+   display: flex;
+   align-items: center;
+   /* background-color: antiquewhite; */
+ }
+
+ .sidebar-btn {
+   padding: 0;
+   height: 18px;
+   border: none;
+   background: none;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   margin-top: 2px;
+   margin-left: 20px;
+   margin-right: 16px;
+ }
+
+ .sidebar-img {
+   height: 100%;
+ }
+
+ .calendar-logo-container {
+   display: flex;
+   align-items: center;
+   margin-right: 10px;
+ }
+
+ .calender-title {
+   margin: 0;
+   margin-right: 14px;
+   padding: 0;
+   font-size: 20px;
+   font-weight: 600;
+ }
+
+ .calender-date {
+   color: 505050;
+   font-size: 12px;
+ }
+
+ /* ViewModeToggle.css */
+
+ .view-toggle {
+   display: inline-flex;
+   border-radius: 50px;
+   border: 1px solid #FF5E29;
+   overflow: hidden;
+
+   margin: 0 12px 0 20px;
+ }
+
+ /* 각 버튼 (왼쪽/오른쪽 공통) */
+ .view-toggle__btn {
+   flex: 1;
+   padding: 6px 8px;
+   width: 64px;
+   border: none;
+   background: transparent;
+   cursor: pointer;
+   font-size: 14px;
+   font-weight: 400;
+   line-height: 1;
+   color: #000;
+ }
+
+ /* 활성 탭 (이미지에서 주황색 부분) */
+ .view-toggle__btn--active {
+   background: #FF5E29;
+   color: #ffffff;
+ }

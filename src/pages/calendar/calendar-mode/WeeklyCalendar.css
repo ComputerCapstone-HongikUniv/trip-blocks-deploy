@@ -1,0 +1,131 @@
+.weekly-calendar-wrapper {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  /* 혹시 레이아웃 확인용: */
+  /* border: 1px solid red; */
+}
+
+.weekly-calendar-wrapper--export {
+  min-height: auto !important;
+  height: auto !important;
+}
+
+.my-slot-label {
+  font-size: 10px;
+  color: #555;
+  /* 색상도 조절 가능 */
+}
+
+/* FullCalendar 가장 바깥 테두리 제거 */
+.fc,
+.fc-scrollgrid {
+  border: none !important;
+}
+
+.fc .fc-timegrid-slot-label {
+  vertical-align: top;
+}
+
+.fc .fc-timegrid-slot {
+  height: 70px !important;
+}
+
+/* ─────── FullCalendar 일정 텍스트 스타일 변경 ─────── */
+
+/* 일정 전체 공통 스타일 */
+.fc-event {
+  border: none;
+  border-radius: 8px !important;
+}
+
+/* background 이벤트는 둥근 모서리 제거 */
+.fc-bg-event,
+.fc-timegrid-bg-event,
+.fc-event.fc-bg-event {
+  border-radius: 0 !important;
+}
+
+.fc .fc-timegrid-event-harness {
+  left: 0 !important;
+  width: 100% !important;
+}
+
+.fc .fc-timegrid-event {
+  width: 100% !important;
+}
+
+.my-event-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 0.2em 0.5em;
+  overflow: hidden;
+}
+
+.my-event-title {
+  width: 100%;
+  font-size: 13px;
+  font-weight: 500;
+  color: #454545;
+  margin-bottom: 2px;
+  /* overflow: hidden; */
+}
+
+.my-event-time {
+  font-size: 12px;
+  font-weight: 400;
+  color: #7c7c7c;
+}
+
+.trip-day-header {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.trip-day-header-icon {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
+
+/* 경고 이벤트 스타일 */
+.fc-event.warning-event {
+  background-color: transparent !important;
+  border: none !important;
+  border-left: 3px dashed #FACC15 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  pointer-events: none;
+}
+
+/* 안쪽 내용은 보이지 않도록 최소화 (원하면 내용 없이 라인만 표시) */
+.warning-event-inner {
+  position: relative;
+  width: fit-content;
+  height: 100%;
+  /* color: transparent; */
+  /* text 숨김 */
+}
+
+.warning-transportation {
+  position: absolute;
+  top: 30%;
+  width: fit-content;
+  background-color: #FACC15;
+  border-radius: 20px;
+  padding: 0 4px;
+  margin-left: -15px;
+  font-size: 13px;
+}
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.35);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+}

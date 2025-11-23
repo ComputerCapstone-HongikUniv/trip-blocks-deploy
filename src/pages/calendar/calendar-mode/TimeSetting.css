@@ -1,0 +1,68 @@
+.time-setting {
+  /* background-color: lavender; */
+  margin-bottom: 28px;
+}
+
+.time-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.time-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  /* margin-bottom: 16px; */
+}
+
+.time-date-input,
+.time-time-input {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  /* background-color: #eee; */
+  padding: 6px 14px;
+}
+
+.time-arrow {
+  color: #bbb;
+}
+
+.date-time-save-btn {
+  width: 100%;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-radius: 50px;
+  font-size: 14px;
+  font-weight: 500;
+  background-color: #eee;
+}
+
+.date-time-save-btn:hover {
+  background-color: #ccc;
+  /* color: white; */
+}
+
+
+/* 🔹 크롬, 엣지 등 (WebKit 기반) */
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="time"]::-webkit-calendar-picker-indicator {
+  display: none;
+  -webkit-appearance: none;
+}
+
+/* 🔹 Firefox (달력 아이콘 제거) */
+input[type="date"]::-moz-focus-inner,
+input[type="time"]::-moz-focus-inner {
+  border: 0;
+}
+
+/* 🔹 기본적으로 아이콘이 차지하던 공간도 제거 */
+input[type="date"] {
+  /* appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none; */
+  padding-right: 0px;
+  /* 필요 시 오른쪽 여백 조정 */
+}

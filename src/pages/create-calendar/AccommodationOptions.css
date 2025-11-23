@@ -1,0 +1,87 @@
+.accommodation-list-container {}
+
+.accommodation-list {
+  height: 600px;
+  /* ✅ 고정 높이 */
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+
+  overflow-y: auto;
+  /* ✅ 내부 스크롤 활성화 */
+  overflow-x: hidden;
+  /* 가로 스크롤은 막기 */
+  scrollbar-width: thin;
+  /* Firefox */
+}
+
+.accommodation-list::-webkit-scrollbar {
+  width: 6px;
+  /* Chrome */
+}
+
+.accommodation-list::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 3px;
+}
+
+.accommodation-card {
+  /* width: 200px; */
+  border: 1px solid #dadada;
+  ;
+  border-radius: 16px;
+
+  padding: 12px 12px;
+  /* border-bottom: 1px solid #eee; */
+}
+
+.accommodation-photo {
+  width: 200px;
+  height: 150px;
+  border-radius: 8px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.accommodation-info {}
+
+.accommodation-name {
+  font-weight: 600;
+  font-size: 16px;
+  margin: 6px 0;
+}
+
+.accommodation-address {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 4px;
+}
+
+.accommodation-rating {
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.rating-star {
+  color: #f4b400;
+  /* 노란 별 */
+}
+
+.rating-score {
+  font-size: 14px;
+}
+
+.rating-count {
+  color: #666;
+  font-size: 14px;
+}
+
+.rating-none {
+  color: #999;
+  font-size: 14px;
+}

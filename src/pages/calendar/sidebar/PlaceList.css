@@ -1,0 +1,20 @@
+.place-list {
+  flex: 1;
+  overflow-y: auto;
+  width: 100%;
+  scrollbar-width: thin;
+  /* Firefox에서 hover 시 얇게 표시 */
+  scrollbar-color: #cecece00 transparent;
+}
+
+.place-list:hover {
+  scrollbar-width: thin;
+  /* Firefox에서 hover 시 얇게 표시 */
+  scrollbar-color: #cecece transparent;
+  transition: scrollbar-color 0.5s ease;
+}
+
+/* WebKit 계열 (Chrome, Edge, Safari) */
+.place-list::-webkit-scrollbar {
+  width: 1px;
+}

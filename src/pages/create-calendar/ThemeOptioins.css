@@ -1,0 +1,46 @@
+/* theme */
+.theme-option-container {
+  margin: 16px 0 100px 0;
+}
+
+.theme-option-group {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.theme-card {
+  width: 200px;
+  height: 60px;
+  border: 1.5px solid #ddd;
+  border-radius: 8px;
+  padding: 10px 16px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  transition: 0.2s;
+
+  display: flex;
+  justify-content: center;
+  /* 가로 중앙 */
+  align-items: center;
+  /* 세로 중앙 */
+}
+
+.theme-card-selected {
+  border-color: #ff9800;
+  /* background-color: #fff3e0; */
+}
+
+.theme-option-radio {
+  /* 라디오 숨기고 카드 클릭되게 만들고 싶으면 */
+  display: none;
+}
+
+.theme-info {
+  margin-top: 12px;
+  font-size: 14px;
+  text-align: center;
+  color: #555;
+  line-height: 1.5;
+}

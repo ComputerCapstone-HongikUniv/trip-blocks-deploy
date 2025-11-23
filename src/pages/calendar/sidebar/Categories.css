@@ -1,0 +1,36 @@
+.place-category-container {
+  display: flex;
+  align-items: flex-end;
+  margin-bottom: 12px;
+}
+
+.place-category-container h4 {
+  font-size: 19px;
+  font-weight: 600;
+  padding: 0;
+  margin: 0 0 0 4px;
+  margin-right: 12px;
+}
+
+.categories {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.category {
+  border: 1px solid lightgray;
+  background-color: white;
+  color: #555555;
+  border-radius: 20px;
+  padding: 2px 8px;
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.category--active {
+  border-color: rgb(0, 0, 0);
+  /* background-color: #e4e4e4; */
+  color: #000000;
+  font-weight: 500;
+}

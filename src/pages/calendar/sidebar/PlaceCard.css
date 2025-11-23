@@ -1,0 +1,96 @@
+.place-card-closed {
+  background-color: white;
+  border: 1px solid #E9E9E9;
+  border-radius: 16px;
+  padding: 12px 14px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: flex-end;
+}
+
+.place-card-closed:hover {
+  cursor: pointer;
+}
+
+.place-card-img {
+  width: 90px;
+  height: 90px;
+  object-fit: cover;
+  display: block;
+  background-color: #f0f0f0;
+  flex-shrink: 0;
+  /* 이미지가 컨테이너를 가득 채우되 자를 수 있음 */
+  border-radius: 8px;
+  margin-right: 12px;
+}
+
+.placeholder {
+  background-color: #f0f0f0;
+}
+
+.place-card-info {
+  height: 90px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.place-card-upper-container {
+  flex: 1;
+}
+
+.place-card-name {
+  padding: 0;
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.place-card-category {
+  font-size: 12px;
+
+}
+
+.place-card-bottom-container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+}
+
+.place-card-rating-comment-container {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  color: #515151;
+}
+
+.bookmark-make-event-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #515151;
+}
+
+.bookmark-make-event-container button {
+  padding: 0;
+  background-color: #ffffff00;
+}
+
+.bookmark-icon-img {
+  width: 14px;
+}
+
+.make-event-btn {
+  margin-top: 3px;
+}
+
+.plus-btn-img {
+  width: 17px;
+}
+
+.place-detail-open-img {
+  width: 15px;
+}

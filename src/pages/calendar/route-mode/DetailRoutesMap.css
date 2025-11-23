@@ -1,0 +1,262 @@
+ .route-view-container {
+   position: relative;
+   width: 100%;
+   height: 100vh;
+ }
+
+ .route-info {
+   position: absolute;
+   top: 16px;
+   left: 20px;
+   z-index: 30;
+
+ }
+
+ .route-map-wrapper {
+   position: absolute;
+   inset: 0;
+   /* top:0; right:0; bottom:0; left:0; 와 같음 */
+   z-index: 0;
+ }
+
+ .route-map-loading {
+   width: 100%;
+   height: 100%;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+ }
+
+ .route-title-wrapper {
+   display: flex;
+   align-items: center;
+   gap: 14px;
+   padding: 12px 24px;
+   border-radius: 16px;
+   background-color: white;
+   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+   margin-bottom: 12px;
+ }
+
+ .route-title {
+   margin-right: 14px;
+   padding: 0;
+   margin: 0;
+   font-size: 18px;
+   font-weight: 600;
+ }
+
+ .route-date {
+   color: 505050;
+   font-size: 12px;
+ }
+
+ .detail-route-container {
+   width: 0;
+   /* height: 596px; */
+   background-color: white;
+   border-radius: 16px;
+   /* padding: 16px 20px; */
+   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+ }
+
+ .detail-route-container--active {
+   width: 325px;
+   /* height: 596px; */
+   background-color: white;
+   border-radius: 16px;
+   padding: 16px 20px;
+   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+ }
+
+ .routes-select {
+   width: 150px;
+   background-color: white;
+   padding: 0 0 12px 0;
+   border-radius: 16px;
+   display: flex;
+   flex-direction: column;
+   z-index: 100;
+   /* box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); */
+   /* gap: 8px; */
+ }
+
+ .routes-select--active {
+   padding: 0;
+   margin-bottom: 16px;
+ }
+
+ .selected-routes {
+   position: relative;
+   font-size: 16px;
+   font-weight: 600;
+   padding: 16px 20px 8px 20px;
+   display: flex;
+   z-index: 100;
+ }
+
+ .selected-routes--active {
+   position: relative;
+   background-color: #1B1B1B;
+   color: white;
+   padding: 10px 18px;
+   border-radius: 16px;
+   font-weight: 400;
+ }
+
+ .day-dropdown-toggle {
+   background: none;
+   padding: 2px 4px;
+   margin-left: 8px;
+ }
+
+ .day-dropdown-toggle--active {
+   color: white;
+ }
+
+ .all-routes-wrapper {
+   position: relative;
+
+ }
+
+ .all-routes {
+   position: absolute;
+   /* top: 130px; */
+   display: flex;
+   flex-direction: column;
+   z-index: 10;
+   background-color: white;
+   border-radius: 0 0 16px 16px;
+   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+ }
+
+ .day-dropdown-list {
+   /* border: 1px solid red; */
+   width: 150px;
+   padding-bottom: 12px;
+   /* border-radius: 16px; */
+   /* overflow: hidden; */
+ }
+
+ .day-btn {
+   display: flex;
+   align-items: center;
+   gap: 10px;
+   background: none;
+   padding: 5px 22px;
+ }
+
+ .day-btn:hover {
+   background-color: #EDEDED;
+ }
+
+ .day-color {
+   width: 15px;
+   height: 15px;
+   background-color: aqua;
+   border-radius: 4px;
+ }
+
+ .day-date {
+   color: #747474;
+   font-size: 15px;
+ }
+
+ .date-count {
+   font-size: 15px;
+   margin-bottom: 16px;
+ }
+
+
+ .event-info {
+   background-color: #F5F5F5;
+   border-radius: 16px;
+   padding: 12px 16px;
+   display: flex;
+   align-items: center;
+   gap: 12px
+ }
+
+ .event-num {
+   height: fit-content;
+   background-color: #FFD24F;
+   padding: 0 6px;
+   border-radius: 10px;
+   font-size: 12px;
+   font-weight: 500;
+   color: white;
+ }
+
+
+ .event-title-container {
+   flex: 1;
+ }
+
+ .event-title {
+   font-size: 16px;
+   font-weight: 600;
+   margin: 2px 0;
+ }
+
+ .event-time {
+   font-size: 12px;
+   color: #515151;
+ }
+
+ .event-route-info-container {
+   /* background-color: aliceblue; */
+   display: flex;
+   align-items: center;
+   gap: 16px;
+   padding: 0 20px;
+ }
+
+ .event-route-line {
+   height: 67px;
+   border-left: 4px dashed #FFD24F;
+ }
+
+ .event-route-info-txt {
+   display: flex;
+   align-items: center;
+   font-size: 14px;
+   color: #777777;
+ }
+
+ .select-transport-panel-wrapper {
+   position: relative;
+   /* border: 1px solid red; */
+   margin-left: 8px;
+ }
+
+ .transport-select-btn {
+   padding: 2px 4px;
+   border: none;
+   background: none;
+ }
+
+ .transport-select-icon-img {
+   width: 11px;
+   /* height: 20px; */
+ }
+
+
+
+
+ .back-to-calendar-btn {
+   position: absolute;
+   bottom: 24px;
+   right: 20px;
+   font-size: 14px;
+   font-weight: 600;
+   padding: 8px 16px;
+   border-radius: 50px;
+   background-color: #1B1B1B;
+   color: white;
+   z-index: 30;
+ }
+
+ .back-to-calendar-btn:hover {
+   background-color: #FF5E29;
+   transition: 0.1;
+ }
