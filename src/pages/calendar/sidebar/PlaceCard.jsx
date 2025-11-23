@@ -68,7 +68,9 @@ export default function PlaceCard({
         await axiosInstance.delete(
           `/api/calendars/${calendarId}/places`,
           {
-            placeId: place.placeId
+            data: {
+              placeId: place.placeId
+            }
           }
         );
       }
