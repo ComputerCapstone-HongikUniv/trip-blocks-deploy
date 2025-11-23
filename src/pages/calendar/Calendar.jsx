@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import axiosInstance from '../../api/axiosInstance.js';
 import html2canvas from 'html2canvas';
 import { CITY_CONFIG } from '../../utils/cityConfig.js';
@@ -11,6 +11,7 @@ import './Calendar.css';
 
 export default function Calendar() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { calendarId } = useParams();
   const [headerInfo, setHeaderInfo] = useState([]);
   const [mode, setMode] = useState("calendar");
@@ -180,7 +181,6 @@ export default function Calendar() {
   }, [city]);
 
   // 추천 장소 리스트 불러오기 (함수로 분리)
-  // 추천 장소 리스트 불러오기 (함수로 분리)
   const fetchRecommendedPlaces = async () => {
     const baseCenter = mapCenter || center; // 지도 중심 좌표 우선 사용
     if (!baseCenter) return;
@@ -189,7 +189,7 @@ export default function Calendar() {
 
     try {
       const response = await axiosInstance.get(
-        `/api/calendars/${calendarId}/places/recommended-places?latitude=${lat}&logtitude=${lng}`
+        `/api/calendars/${calendarId}/places/recommended-places?latitude=${lat}&longitude=${lng}`
       );
       setRecommendedPlaces(response.data);
     } catch (err) {
@@ -199,7 +199,7 @@ export default function Calendar() {
 
   useEffect(() => {
     fetchRecommendedPlaces();
-  }, [calendarId, bookmarkedPlaces]);
+  }, [calendarId, bookmarkedPlaces, location.pathname]);
 
   // 북마크 리스트 불러오기 함수로 분리
   const fetchBookmarkedPlaces = async () => {

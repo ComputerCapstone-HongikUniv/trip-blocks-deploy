@@ -96,9 +96,22 @@ export default function EditProfile() {
     const file = e.target.files && e.target.files[0];
     if (!file) return;
 
+    // 1) 용량 제한 (예: 5MB)
+    const MAX_SIZE = 5 * 1024 * 1024;
+    if (file.size > MAX_SIZE) {
+      alert('파일이 너무 커요. 5MB 이하 이미지로 올려주세요.');
+      return;
+    }
+
+    // 2) 확장자 제한 (백엔드가 jpeg/png만 지원한다고 가정)
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+    if (!allowedTypes.includes(file.type)) {
+      alert('JPG 또는 PNG 형식만 업로드할 수 있어요.');
+      return;
+    }
+
     const previewUrl = URL.createObjectURL(file);
     setProfileImage(previewUrl);
-
     setUploadedFile(file);         // 서버로 보낼 파일
     setSelectedProfileImage(null); // 기본 이미지 선택 해제
   };
