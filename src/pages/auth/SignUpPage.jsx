@@ -97,29 +97,50 @@ function SignUpPage() {
 
   // 아이디 중복 확인 (axiosInstance 사용)
   const handleIdCheck = async () => {
-    // 아이디 형식이 틀리면 중단
+    // 아이디 형식이 틀리면 아예 백엔드에 안 보냄
     if (!isValidIdFormat) return;
 
     try {
-      // 백엔드로 GET 요청 (예: /check-id?loginId=abc)
-      const response = await axiosInstance.get(`/api/check-id?loginId=${loginId}`);
+      // 백엔드로 GET 요청 (쿼리스트링은 params로 넘기는 게 안전)
+      const response = await axiosInstance.get('/api/check-id', {
+        params: { loginId },   // ?loginId=xxx
+      });
 
-      // 백엔드 응답에 따라 메시지 표시
-      if (response.data.exists) {
-        setIdCheckMessage('이미 사용 중인 아이디입니다.');
+      const { isDuplicatedId, message } = response.data;
+
+      // 백엔드에서 준 message를 그대로 쓰되,
+      // 혹시 message가 비어 있으면 우리 쪽 기본 문구 사용
+      if (isDuplicatedId) {
+        // 이미 존재하는 아이디
+        setIdCheckMessage(message || '이미 사용 중인 아이디입니다.');
         setIdCheckStatus('error');
         setIsIdAvailable(false);
       } else {
-        setIdCheckMessage('사용 가능한 아이디입니다.');
+        // 아직 안 쓰는 아이디
+        setIdCheckMessage(message || '사용 가능한 아이디입니다.');
         setIdCheckStatus('success');
         setIsIdAvailable(true);
       }
 
-      // 중복 확인 완료 표시
+      // 중복 확인을 정상적으로 한 상태
       setIsIdChecked(true);
     } catch (error) {
-      // 요청 실패 시 에러 처리
-      setIdCheckMessage('중복 확인 중 오류가 발생했습니다.');
+      // 서버가 응답은 했는데 400, 500 이런 경우
+      if (error.response) {
+        const { status, data } = error.response;
+
+        if (status === 400) {
+          // 잘못된 요청 (예: 백엔드가 허용하지 않는 형식)
+          setIdCheckMessage(data?.message || '잘못된 요청입니다.');
+        } else {
+          // 그 외 서버 에러
+          setIdCheckMessage(data?.message || '중복 확인 중 오류가 발생했습니다.');
+        }
+      } else {
+        // 아예 서버에 도달을 못했거나 네트워크 문제
+        setIdCheckMessage('네트워크 오류가 발생했습니다.');
+      }
+
       setIdCheckStatus('error');
       setIsIdAvailable(false);
       setIsIdChecked(false);
