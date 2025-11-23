@@ -24,7 +24,7 @@ export default function Calendar() {
   const [bookmarkedPlaces, setBookmarkedPlaces] = useState([]);
   const [searchedPlaces, setSearchedPlaces] = useState([]);
   const [sortType, setSortType] = useState(null);
-  const [clikedPlaceCard, setClickedPlaceCard] = useState(null);
+  const [selectedPlaceId, setSelectedPlaceId] = useState(null);
   const [city, setCity] = useState(null);
   const [center, setCenter] = useState();
   const [mapCenter, setMapCenter] = useState(center);
@@ -304,6 +304,8 @@ export default function Calendar() {
               captureRef={captureRef}
               onReadyForExport={handleCalendarReadyForExport}
               isExporting={isExporting}
+              selectedPlaceId={selectedPlaceId}
+              setSelectedPlaceId={setSelectedPlaceId}
             />
           )}
 

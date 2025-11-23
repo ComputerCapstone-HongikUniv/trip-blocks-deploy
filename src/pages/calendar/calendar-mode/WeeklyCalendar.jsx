@@ -47,7 +47,9 @@ export default function WeeklyCalendar({
   refreshWarnings,
   captureRef,
   onReadyForExport,
-  isExporting
+  isExporting,
+  selectedPlaceId,
+  setSelectedPlaceId
 }) {
   const calendarRef = useRef(null);
   const calendarWrapperRef = useRef(null);
@@ -376,6 +378,7 @@ export default function WeeklyCalendar({
       setMakeGEventMode(false);
       setSelectedPlaceForGEvent(null);
       setOpeningHours([]);
+      setSelectedPlaceId(null);
     }
 
     document.addEventListener('mousedown', handleClickOutside);

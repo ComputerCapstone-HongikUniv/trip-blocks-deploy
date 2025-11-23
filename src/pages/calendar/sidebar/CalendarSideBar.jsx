@@ -19,10 +19,11 @@ export default function CalendarSideBar({
   calendarId,
   setMakeGEventMode,
   setSelectedPlaceForGEvent,
-  onSearchRequest
+  onSearchRequest,
+  selectedPlaceId,
+  setSelectedPlaceId
 }) {
   const [inputText, setInputText] = useState('');   // 입력된 값
-  const [selectedPlaceId, setSelectedPlaceId] = useState(null);
   const prevModeRef = useRef(recomOrSearchOrSave);
   useEffect(() => {
     prevModeRef.current = recomOrSearchOrSave;
