@@ -426,50 +426,42 @@ export default function WeeklyCalendar({
   const viewStart = visibleRange.start;         // 이 주의 시작일
   const baseDate = new Date(viewStart);
 
-  function parseKoreanTime(str) {
+  function parseTime(str) {
     if (!str) return null;
-    const trimmed = str.trim(); // 예: "오전 8:30" or "오후 8"
+    const trimmed = str.trim(); // 예: "오전 8:30", "오후 8", "AM 10:00", "PM 5:30"
 
-    // 1) "오전 8:30" 형식 (정상)
-    let m = trimmed.match(/^(오전|오후)\s*(\d{1,2}):(\d{2})$/);
-    if (m) {
-      let [, period, hStr, mStr] = m;
-      let hour = parseInt(hStr, 10);
-      const minute = parseInt(mStr, 10);
-
-      if (period === '오전') {
-        if (hour === 12) hour = 0;
-      } else if (period === '오후') {
-        if (hour !== 12) hour += 12;
-      }
-      return { hour, minute };
+    // 오전/오후/AM/PM + 시[:분] 형식 (분은 선택)
+    const m = trimmed.match(/^(오전|오후|AM|PM)\s*(\d{1,2})(?::(\d{2}))?$/i);
+    if (!m) {
+      console.warn('[parseTime] 알 수 없는 형식:', str);
+      return null;
     }
 
-    // 2) "오전 8" / "오후 3" 같이 분이 없는 경우 → 0분으로 처리
-    m = trimmed.match(/^(오전|오후)\s*(\d{1,2})$/);
-    if (m) {
-      let [, period, hStr] = m;
-      let hour = parseInt(hStr, 10);
-      const minute = 0; // 기본값
+    let [, periodRaw, hStr, mStr] = m;
+    const period = periodRaw.toUpperCase(); // "오전" / "오후" / "AM" / "PM"
+    let hour = parseInt(hStr, 10);
+    let minute = mStr != null ? parseInt(mStr, 10) : 0; // 분이 없으면 0분
 
-      if (period === '오전') {
-        if (hour === 12) hour = 0;
-      } else if (period === '오후') {
-        if (hour !== 12) hour += 12;
-      }
-      return { hour, minute };
+    // 한글/영문 모두 지원
+    if (period === '오전' || period === 'AM') {
+      if (hour === 12) hour = 0;
+    } else if (period === '오후' || period === 'PM') {
+      if (hour !== 12) hour += 12;
     }
 
-    console.warn('[parseKoreanTime] 알 수 없는 형식:', str);
-    return null;
+    return { hour, minute };
   }
 
   const backgroundEvents = openingHours
     .map((str, idx) => {
       // "월요일: 오전 8:30 ~ 오후 6:00"
-      const [dayPartRaw, timePartRaw] = str.split(':');
-      const dayPart = (dayPartRaw || '').trim();   // "월요일"
-      const timePart = (timePartRaw || '').trim(); // "오전 8:30 ~ 오후 6:00"
+      const match = str.match(/^([^:]+):\s*(.+)$/);
+      if (!match) {
+        console.warn('[openingHours] 알 수 없는 형식:', str);
+        return null;
+      }
+      const dayPart = match[1].trim();   // "월요일"
+      const timePart = match[2].trim();  // "AM 10:30 ~ PM 5:30"
 
       const dayIndex = weekdayMap[dayPart];
       if (dayIndex === undefined) {
@@ -506,8 +498,8 @@ export default function WeeklyCalendar({
 
       // ✅ 3) "오전 8:30 ~ 오후 6:00" 일반 케이스 처리
       const [startStrRaw, endStrRaw] = timePart.split('~');
-      const startInfo = parseKoreanTime(startStrRaw);
-      const endInfo = parseKoreanTime(endStrRaw);
+      const startInfo = parseTime(startStrRaw);
+      const endInfo = parseTime(endStrRaw);
 
       if (!startInfo || !endInfo) {
         console.warn('시간 파싱 실패:', timePart);
