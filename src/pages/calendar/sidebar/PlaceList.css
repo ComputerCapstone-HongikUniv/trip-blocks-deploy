@@ -1,7 +1,7 @@
 .place-list {
   flex: 1;
   overflow-y: auto;
-  width: 100%;
+  width: 103%;
   scrollbar-width: thin;
   /* Firefox에서 hover 시 얇게 표시 */
   scrollbar-color: #cecece00 transparent;

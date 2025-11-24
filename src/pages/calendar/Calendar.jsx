@@ -231,6 +231,19 @@ export default function Calendar() {
     fetchSearchedPlaces();
   }, [placeQuery, calendarId, bookmarkedPlaces]);
 
+  // 지도에서 "이 지역 재검색" 눌렀을 때
+  const handleMapReSearch = () => {
+    // 추천 모드일 때 → 추천 장소 다시 요청
+    if (recomOrSearchOrSave === "recommend") {
+      fetchRecommendedPlaces();
+    }
+    // 검색 모드일 때 → 검색 다시 요청
+    else if (recomOrSearchOrSave === "search") {
+      fetchSearchedPlaces();
+    }
+    // 북마크 모드 등은 굳이 재검색 안 함
+  };
+
   /* 여기서 basePlaces / filteredPlaces / sortedPlaces 한 번에 계산 */
   const basePlaces =
     recomOrSearchOrSave === "recommend"
@@ -324,6 +337,7 @@ export default function Calendar() {
               places={filteredPlaces}
               events={events}
               mapEvents={mapEvents}
+              onReSearch={handleMapReSearch}
             />
           )}
         </div>
@@ -336,7 +350,7 @@ export default function Calendar() {
             })
           }
         >
-          상세 경로 보기
+          일정 상세 경로 보기
         </button>
       </div>
     </div>

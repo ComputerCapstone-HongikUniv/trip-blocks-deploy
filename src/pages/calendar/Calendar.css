@@ -44,10 +44,11 @@
   right: 20px;
   font-size: 14px;
   font-weight: 600;
-  padding: 8px 16px;
+  padding: 10px 20px;
   border-radius: 50px;
   background-color: #1B1B1B;
   color: white;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
   z-index: 30;
 }
 

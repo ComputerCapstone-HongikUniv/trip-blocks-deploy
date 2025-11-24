@@ -17,6 +17,7 @@ export default function Map({
   places = [],
   events,
   mapEvents = [],
+  onReSearch,
 }) {
   const mapRef = useRef(null);
   const markersRef = useRef([]);
@@ -88,6 +89,13 @@ export default function Map({
         onLoad={handleMapLoad}
         onCenterChanged={handleCenterChanged}
       />
+      <button className="search-again-btn"
+        onClick={() => {
+          if (onReSearch) onReSearch();
+        }}
+      >
+        이 지역 재검색
+      </button>
     </div>
   );
 }
