@@ -2,12 +2,14 @@
   background-color: white;
   border: 1px solid #E9E9E9;
   border-radius: 16px;
-  padding: 12px 14px;
+  /* padding: 12px 14px; */
   margin-bottom: 8px;
+  overflow: hidden;
 }
 
 .place-detail-container--active {
   border: 1px solid #FF5E29;
+  background-color: #FFF7F4;
 }
 
 .place-detail-container:hover {
@@ -18,8 +20,12 @@
   height: 240px;
   width: 100%;
   object-fit: cover;
-  border-radius: 8px;
+  /* border-radius: 8px; */
   margin-bottom: 6px;
+}
+
+.place-detail-info {
+  padding: 0 14px 12px 14px;
 }
 
 .place-detail-name {

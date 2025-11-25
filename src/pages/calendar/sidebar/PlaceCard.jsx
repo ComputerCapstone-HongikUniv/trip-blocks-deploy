@@ -196,11 +196,6 @@ export default function PlaceCard({
                     alt="plus"
                   />
                 </button>
-                <button onClick={handleCardOpen}>
-                  <img className="place-detail-open-img"
-                    src={downArrowIcon}
-                    alt="장소 상세 정보 닫기" />
-                </button>
               </div>
             </div>
           </div>
