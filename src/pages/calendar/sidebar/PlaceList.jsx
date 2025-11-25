@@ -10,7 +10,8 @@ export default function PlaceList({
   setSelectedPlaceForGEvent,
   selectedPlaceId,
   setSelectedPlaceId,
-  setMode
+  setMode,
+  onFocusPlace,
 }) {
   return (
     <div className="place-list">
@@ -26,6 +27,7 @@ export default function PlaceList({
             selectedPlaceId={selectedPlaceId}
             setSelectedPlaceId={setSelectedPlaceId}
             setMode={setMode}
+            onFocusPlace={onFocusPlace}
           />
         );
       })}

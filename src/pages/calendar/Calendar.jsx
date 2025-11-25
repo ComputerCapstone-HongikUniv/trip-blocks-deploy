@@ -187,9 +187,18 @@ export default function Calendar() {
 
     const { lat, lng } = baseCenter;
 
+    // 🔹 현재 선택된 카테고리(state)
+    const selectedCategory = category; // null | "tourist_attraction" | "restaurant" | "cafe" ...
+
+    // 🔹 category가 있을 때만 쿼리 파라미터에 추가
+    const categoryParam = selectedCategory
+      ? `&category=${encodeURIComponent(selectedCategory)}`
+      : "";
+
     try {
       const response = await axiosInstance.get(
-        `/api/calendars/${calendarId}/places/recommended-places?latitude=${lat}&longitude=${lng}`
+        `/api/calendars/${calendarId}/places/recommended-places?latitude=${lat}&longitude=${lng}${categoryParam}`
+        // 예: /recommended-places?latitude=37.5&longitude=126.9&category=attraction
       );
       setRecommendedPlaces(response.data);
     } catch (err) {
@@ -199,7 +208,7 @@ export default function Calendar() {
 
   useEffect(() => {
     fetchRecommendedPlaces();
-  }, [calendarId, bookmarkedPlaces, location.pathname]);
+  }, [calendarId, bookmarkedPlaces, location.pathname, category]);
 
   // 북마크 리스트 불러오기 함수로 분리
   const fetchBookmarkedPlaces = async () => {
@@ -255,6 +264,20 @@ export default function Calendar() {
     setPlaceQuery(name);
   };
 
+  // 🔹 사이드바에서 PlaceCard 클릭 → 지도 중심 이동
+  const handleFocusPlaceOnMap = (place) => {
+    if (!place || place.latitude == null || place.longitude == null) return;
+
+    // (옵션) 자동으로 지도 모드로 전환하고 싶으면 켜기
+    // setMode("map");
+
+    // 지도에 전달할 중심 좌표 갱신
+    setMapCenter({
+      lat: place.latitude,
+      lng: place.longitude,
+    });
+  };
+
   /* 여기서 basePlaces / filteredPlaces / sortedPlaces 한 번에 계산 */
   const basePlaces =
     recomOrSearchOrSave === "recommend"
@@ -263,11 +286,7 @@ export default function Calendar() {
         ? searchedPlaces
         : bookmarkedPlaces;
 
-  const filteredPlaces = category
-    ? basePlaces.filter((place) => place.category === category)
-    : basePlaces;
-
-  const sortedPlaces = [...filteredPlaces].sort((a, b) => {
+  const sortedPlaces = [...basePlaces].sort((a, b) => {
     if (sortType === "rating") return b.rating - a.rating;
     if (sortType === "review") return b.commentNum - a.commentNum;
     return 0;
@@ -312,6 +331,7 @@ export default function Calendar() {
           selectedPlaceId={selectedPlaceId}
           setSelectedPlaceId={setSelectedPlaceId}
           setMode={setMode}
+          onFocusPlace={handleFocusPlaceOnMap}
         />
 
         {/* 캘린더 / 지도 뷰 */}
@@ -349,7 +369,7 @@ export default function Calendar() {
               setMapCenter={setMapCenter}
               mode={mode}
               recomOrSearchOrSave={recomOrSearchOrSave}
-              places={filteredPlaces}
+              places={basePlaces}
               events={events}
               mapEvents={mapEvents}
               onReSearch={handleMapReSearch}

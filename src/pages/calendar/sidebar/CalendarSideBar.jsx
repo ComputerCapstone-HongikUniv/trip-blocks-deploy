@@ -22,7 +22,8 @@ export default function CalendarSideBar({
   onSearchRequest,
   selectedPlaceId,
   setSelectedPlaceId,
-  setMode
+  setMode,
+  onFocusPlace
 }) {
   const [inputText, setInputText] = useState('');   // 입력된 값
   const prevModeRef = useRef(recomOrSearchOrSave);
@@ -134,6 +135,7 @@ export default function CalendarSideBar({
           selectedPlaceId={selectedPlaceId}
           setSelectedPlaceId={setSelectedPlaceId}
           setMode={setMode}
+          onFocusPlace={onFocusPlace}
         />
 
       </div>

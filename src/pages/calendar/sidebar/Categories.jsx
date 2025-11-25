@@ -52,8 +52,8 @@ export default function Categories({
       <div className="categories">
         {/* 카테고리 버튼 */}
         <button
-          className={`category ${category === "attraction" ? "category--active" : ""}`}
-          onClick={() => handleCategoryClick("attraction")}
+          className={`category ${category === "tourist_attraction" ? "category--active" : ""}`}
+          onClick={() => handleCategoryClick("tourist_attraction")}
         >명소</button>
 
         <button

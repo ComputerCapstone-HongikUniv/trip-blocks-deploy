@@ -77,7 +77,7 @@ export default function Map({
     });
   };
 
-  /* ========= 라이프사이클 ========== */
+  // 지도 로드 시 mapRef에 저장
   const handleMapLoad = (map) => {
     mapRef.current = map;
     drawMarkers({
@@ -94,6 +94,23 @@ export default function Map({
     // ✅ 초기 로드 시 현재 places 기준으로 화면 맞추기
     fitMapToPlaces();
   };
+
+  // 🔹 mapCenter 값이 바뀔 때 해당 위치로 지도 이동
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map) return;
+    if (!mapCenter) return;
+
+    // 중심 이동
+    map.panTo(mapCenter);
+
+    // 필요하면 적당한 줌으로 살짝 당겨주기
+    const desiredZoom = 13;
+    const currentZoom = map.getZoom();
+    if (currentZoom < desiredZoom) {
+      map.setZoom(desiredZoom);
+    }
+  }, [mapCenter]);
 
   const handleCenterChanged = () => {
     const map = mapRef.current;

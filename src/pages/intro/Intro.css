@@ -88,7 +88,28 @@
 /* 버튼을 클릭했을 때 */
 .start-btn:active {
   transform: scale(0.97);
+}
 
+.intro-example-images {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 100px;
+}
+
+.calendar-mode-img {
+  width: 1028px;
+  /* margin-left: auto;
+  margin-right: auto;
+  display: block; */
+}
+
+.map-mode-img {
+  width: 1028px;
+}
+
+.detail-route-img {
+  width: 1028px;
 }
 
 .footer {

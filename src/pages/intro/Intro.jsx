@@ -27,8 +27,13 @@ function Intro() {
           </button>
         </div>
 
-        <div style={{ display: "flex", justifyContent: "center" }}>
-          <DummyImage width={1029} height={413} />
+        <div className="intro-example-images">
+          <img className="calendar-mode-img"
+            src="src/assets/examples/calendar-mode.png" alt="캘린더모드" />
+          <img className="map-mode-img"
+            src="src/assets/examples/map-mode.png" alt="캘린더모드" />
+          <img className="detail-route-img"
+            src="src/assets/examples/detail-route.png" alt="캘린더모드" />
         </div>
 
         <div className="saying">

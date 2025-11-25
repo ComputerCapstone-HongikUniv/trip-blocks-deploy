@@ -22,6 +22,7 @@ export default function PlaceCard({
   selectedPlaceId,
   setSelectedPlaceId,
   setMode,
+  onFocusPlace,
 }) {
   const [isPlaceCardOpen, setIsPlaceCardOpen] = useState(false); // 이 카드만 열려 있는지
   const [detail, setDetail] = useState(null);  // 이 카드의 상세 정보
@@ -37,6 +38,8 @@ export default function PlaceCard({
 
   async function handleCardOpen() {
     // 열려고 하는 순간, 아직 상세 데이터를 안 받았다면 fetch
+    const willOpen = !isPlaceCardOpen;  // 이번 클릭으로 "열리는지" 여부
+
     if (!isPlaceCardOpen && !detail) {
       try {
         setLoading(true);
@@ -52,6 +55,11 @@ export default function PlaceCard({
     }
     // 열려 있으면 닫고, 닫혀 있으면 연다
     setIsPlaceCardOpen((prev) => !prev);
+
+    // ✅ 이번에 "열리는" 경우에만 지도 중심 이동 요청
+    if (willOpen && onFocusPlace) {
+      onFocusPlace(place);   // 위로 place 정보 전달
+    }
   }
 
   // 토글 북마크
