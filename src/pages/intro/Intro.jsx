@@ -1,6 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import DummyImage from "../../assets/brand/DummyImage.jsx";
 import BrandLogo from "../../components/Brand/BrandLogo.jsx";
+import calendarModeImg from "../../assets/examples/calendar-mode.png";
+import mapModeImg from "../../assets/examples/map-mode.png";
+import detailRouteImg from "../../assets/examples/detail-route.png";
 import "./Intro.css";
 
 function Intro() {
@@ -28,12 +31,9 @@ function Intro() {
         </div>
 
         <div className="intro-example-images">
-          <img className="calendar-mode-img"
-            src="src/assets/examples/calendar-mode.png" alt="캘린더모드" />
-          <img className="map-mode-img"
-            src="src/assets/examples/map-mode.png" alt="캘린더모드" />
-          <img className="detail-route-img"
-            src="src/assets/examples/detail-route.png" alt="캘린더모드" />
+          <img className="calendar-mode-img" src={calendarModeImg} alt="캘린더 모드" />
+          <img className="map-mode-img" src={mapModeImg} alt="지도 모드" />
+          <img className="detail-route-img" src={detailRouteImg} alt="상세 경로 모드" />
         </div>
 
         <div className="saying">
