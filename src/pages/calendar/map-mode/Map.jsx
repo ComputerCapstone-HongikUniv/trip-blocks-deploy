@@ -96,48 +96,51 @@ export default function Map({
   };
 
   // 🔹 mapCenter 값이 바뀔 때 해당 위치로 지도 이동
-  useEffect(() => {
-    const map = mapRef.current;
-    if (!map) return;
-    if (!mapCenter) return;
+  // useEffect(() => {
+  //   const map = mapRef.current;
+  //   if (!map) return;
+  //   if (!mapCenter) return;
 
-    // 중심 이동
-    map.panTo(mapCenter);
+  //   map.panTo(mapCenter);
+  // }, [mapCenter]);
 
-    // 필요하면 적당한 줌으로 살짝 당겨주기
-    const desiredZoom = 13;
-    const currentZoom = map.getZoom();
-    if (currentZoom < desiredZoom) {
-      map.setZoom(desiredZoom);
-    }
-  }, [mapCenter]);
-
+  // 🔹 centerChanged → mapCenter 저장 + autoFit 끄기
   const handleCenterChanged = () => {
     const map = mapRef.current;
     if (!map) return;
     const newCenter = map.getCenter();
     if (!newCenter) return;
-    const { lat, lng } = newCenter.toJSON();
-    setMapCenter({ lat, lng });
+
+    const next = newCenter.toJSON();
+
+    setMapCenter((prev) => {
+      if (
+        prev &&
+        Math.abs(prev.lat - next.lat) < 1e-7 &&
+        Math.abs(prev.lng - next.lng) < 1e-7
+      ) {
+        return prev;
+      }
+      return next;
+    });
+
     setShouldAutoFit(false);
   };
 
   useEffect(() => {
-    if (mode === "map" && mapRef.current) {
-      drawMarkers({
-        map: mapRef.current,
-        recomOrSearchOrSave,
-        places,
-        mapEvents,
-        markersRef,
-        polylinesRef,
-        showPlaces: showPlacesOnMap,  // ✅ 이번 렌더에서 places를 그릴지
-        showEvents: eventPlaces,      // ✅ 일정 마커를 그릴지
-        onPlaceMarkerClick,
-      });
-      // ✅ places / 토글 / 모드가 바뀔 때도 화면 다시 맞추기
-      fitMapToPlaces();
-    }
+    if (mode !== "map" || !mapRef.current) return;
+
+    drawMarkers({
+      map: mapRef.current,
+      recomOrSearchOrSave,
+      places,
+      mapEvents,
+      markersRef,
+      polylinesRef,
+      showPlaces: showPlacesOnMap,
+      showEvents: eventPlaces,
+      onPlaceMarkerClick,
+    });
 
     return () => {
       markersRef.current.forEach(
@@ -148,12 +151,23 @@ export default function Map({
       polylinesRef.current.forEach((p) => p.setMap(null));
       polylinesRef.current = [];
     };
-  }, [places, mapEvents, mode, recomOrSearchOrSave, events,
-    showPlacesOnMap,  // ✅ 토글 바뀌어도 다시 그리도록
-    eventPlaces,      // ✅
+  }, [
+    places,
+    mapEvents,
+    mode,
+    recomOrSearchOrSave,
+    events,
+    showPlacesOnMap,
+    eventPlaces,
     onPlaceMarkerClick,
-    shouldAutoFit,
   ]);
+
+  useEffect(() => {
+    if (!mapRef.current) return;
+    if (mode !== "map") return;
+
+    fitMapToPlaces();   // 안에서 shouldAutoFit 체크함
+  }, [places, recomOrSearchOrSave]);
 
   // 지도 중심 좌표가 바뀔 때마다 로그 찍거나 다른 작업 가능
   useEffect(() => {
@@ -175,9 +189,11 @@ export default function Map({
   return (
     <div className="main-map-wrapper">
       <GoogleMap
+
         mapContainerStyle={{ width: "100%", height: "100%" }}
-        center={center}
-        zoom={12}
+
+        defaultCenter={center}
+        defaultZoom={12}
         options={{ mapId: MAP_ID }}
         onLoad={handleMapLoad}
         onCenterChanged={handleCenterChanged}
