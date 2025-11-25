@@ -1,5 +1,5 @@
 .place-card-closed {
-  height: 120px;
+  height: 118px;
   box-sizing: border-box;
   background-color: white;
   border: 1px solid #E9E9E9;
@@ -22,7 +22,7 @@
 }
 
 .place-card-img {
-  width: 32%;
+  width: 106px;
   height: 100%;
   object-fit: cover;
   display: block;
