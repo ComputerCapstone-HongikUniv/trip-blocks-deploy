@@ -14,7 +14,7 @@
 /* 선택된 경우 */
 .place-card-closed--active {
   border: 1.5px solid #FF5E29;
-  background-color: #FFF7F4;
+  background-color: #FFFBFA;
 }
 
 .place-card-closed:hover {
@@ -28,7 +28,7 @@
   display: block;
   background-color: #f0f0f0;
   flex-shrink: 0;
-  margin-right: 12px;
+  margin-right: 14px;
 }
 
 .placeholder {

@@ -2,14 +2,14 @@
   background-color: white;
   border: 1px solid #E9E9E9;
   border-radius: 16px;
-  /* padding: 12px 14px; */
+  box-sizing: border-box;
   margin-bottom: 8px;
   overflow: hidden;
 }
 
 .place-detail-container--active {
-  border: 1px solid #FF5E29;
-  background-color: #FFF7F4;
+  border: 1.5px solid #FF5E29;
+  /* background-color: #FFFBFA; */
 }
 
 .place-detail-container:hover {
@@ -21,15 +21,14 @@
   width: 100%;
   object-fit: cover;
   /* border-radius: 8px; */
-  margin-bottom: 6px;
 }
 
 .place-detail-info {
-  padding: 0 14px 12px 14px;
+  padding: 8px 14px 12px 14px;
 }
 
 .place-detail-name {
-  margin: 0 0 6px 0;
+  margin: 0 0 8px 0;
   font-size: 16px;
   font-weight: 700;
 }
