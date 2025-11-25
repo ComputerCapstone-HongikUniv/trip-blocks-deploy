@@ -93,23 +93,36 @@
 .intro-example-images {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  padding: 0 70px;
+  /* align-items: center; */
   gap: 100px;
 }
 
 .calendar-mode-img {
-  width: 1028px;
-  /* margin-left: auto;
+  max-width: 1028px;
+  min-width: 500px;
+  width: 100%;
+  margin-left: auto;
   margin-right: auto;
-  display: block; */
+  display: block;
 }
 
 .map-mode-img {
   width: 1028px;
+  min-width: 500px;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
 }
 
 .detail-route-img {
   width: 1028px;
+  min-width: 500px;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
 }
 
 .footer {
