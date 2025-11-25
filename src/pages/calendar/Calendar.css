@@ -38,6 +38,12 @@
   /* overflow: hidden; */
 }
 
+.map-view {
+  padding: 0;
+  border-top-left-radius: 4px;
+  overflow: hidden;
+}
+
 .detail-rout-btn {
   position: absolute;
   bottom: 24px;

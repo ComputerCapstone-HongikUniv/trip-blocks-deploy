@@ -18,6 +18,7 @@ export default function Map({
   events,
   mapEvents = [],
   onReSearch,
+  onPlaceMarkerClick,
 }) {
   const mapRef = useRef(null);
   const markersRef = useRef([]);
@@ -46,6 +47,7 @@ export default function Map({
       polylinesRef,
       showPlaces: showPlacesOnMap,  // ✅ 이번 렌더에서 places를 그릴지
       showEvents: eventPlaces,      // ✅ 일정 마커를 그릴지
+      onPlaceMarkerClick,
     });
   };
 
@@ -69,6 +71,7 @@ export default function Map({
         polylinesRef,
         showPlaces: showPlacesOnMap,  // ✅ 이번 렌더에서 places를 그릴지
         showEvents: eventPlaces,      // ✅ 일정 마커를 그릴지
+        onPlaceMarkerClick,
       });
     }
 
@@ -84,6 +87,7 @@ export default function Map({
   }, [places, mapEvents, mode, recomOrSearchOrSave, events,
     showPlacesOnMap,  // ✅ 토글 바뀌어도 다시 그리도록
     eventPlaces,      // ✅
+    onPlaceMarkerClick,
   ]);
 
   // 지도 중심 좌표가 바뀔 때마다 로그 찍거나 다른 작업 가능

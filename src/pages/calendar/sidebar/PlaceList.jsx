@@ -9,7 +9,8 @@ export default function PlaceList({
   setMakeGEventMode,
   setSelectedPlaceForGEvent,
   selectedPlaceId,
-  setSelectedPlaceId
+  setSelectedPlaceId,
+  setMode
 }) {
   return (
     <div className="place-list">
@@ -24,6 +25,7 @@ export default function PlaceList({
             setSelectedPlaceForGEvent={setSelectedPlaceForGEvent}
             selectedPlaceId={selectedPlaceId}
             setSelectedPlaceId={setSelectedPlaceId}
+            setMode={setMode}
           />
         );
       })}

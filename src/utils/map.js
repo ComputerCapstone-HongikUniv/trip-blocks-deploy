@@ -137,6 +137,7 @@ export const drawMarkers = ({
   polylinesRef,
   showPlaces = true,
   showEvents = true,
+  onPlaceMarkerClick,
 }) => {
   if (!map) return;
 
@@ -194,7 +195,12 @@ export const drawMarkers = ({
       });
 
       marker.addListener("click", () => {
-        alert(`장소: ${place.placeName}`);
+        if (onPlaceMarkerClick) {
+          onPlaceMarkerClick(place);
+        } else {
+          // 안전장치: 콜백 없으면 이전처럼 alert
+          alert(`장소: ${place.placeName}`);
+        }
       });
 
       markersRef.current.push(marker);

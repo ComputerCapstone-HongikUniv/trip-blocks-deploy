@@ -24,6 +24,8 @@
 /* 열렸을 때: 제자리로 슬라이드 인 */
 .calender-sidebar--open {
   transform: translateX(0);
+  box-shadow: 1px 4px 4px rgba(0, 0, 0, 0.125);
+  z-index: 5;
 }
 
 .calender-sidebar-inner {

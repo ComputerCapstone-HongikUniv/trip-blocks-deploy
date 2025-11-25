@@ -244,6 +244,17 @@ export default function Calendar() {
     // 북마크 모드 등은 굳이 재검색 안 함
   };
 
+  // 지도에서 place 마커 클릭 시 호출할 핸들러
+  const handlePlaceMarkerClickFromMap = (place) => {
+    const name = place.placeName || "";
+    if (!name.trim()) return;
+
+    // 🔹 검색 모드로 전환
+    setRecomOrSearchOrSave("search");
+    // 🔹 검색 쿼리 세팅
+    setPlaceQuery(name);
+  };
+
   /* 여기서 basePlaces / filteredPlaces / sortedPlaces 한 번에 계산 */
   const basePlaces =
     recomOrSearchOrSave === "recommend"
@@ -300,10 +311,14 @@ export default function Calendar() {
           onSearchRequest={forceSearch}
           selectedPlaceId={selectedPlaceId}
           setSelectedPlaceId={setSelectedPlaceId}
+          setMode={setMode}
         />
 
         {/* 캘린더 / 지도 뷰 */}
-        <div className="weekly-calender-map-view">
+        <div className={`weekly-calender-map-view 
+          ${mode === "calendar" ?
+            "" : "map-view"
+          }`}>
           {mode === "calendar" && (
             <WeeklyCalendar
               calendarId={calendarId}
@@ -338,6 +353,7 @@ export default function Calendar() {
               events={events}
               mapEvents={mapEvents}
               onReSearch={handleMapReSearch}
+              onPlaceMarkerClick={handlePlaceMarkerClickFromMap}
             />
           )}
         </div>

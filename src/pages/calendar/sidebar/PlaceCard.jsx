@@ -21,6 +21,7 @@ export default function PlaceCard({
   setSelectedPlaceForGEvent,
   selectedPlaceId,
   setSelectedPlaceId,
+  setMode,
 }) {
   const [isPlaceCardOpen, setIsPlaceCardOpen] = useState(false); // 이 카드만 열려 있는지
   const [detail, setDetail] = useState(null);  // 이 카드의 상세 정보
@@ -94,6 +95,7 @@ export default function PlaceCard({
 
   async function handleMakeEventClick(e) {
     e.stopPropagation();
+    setMode("calendar");
     try {
       const response = await axiosInstance.get(
         `/api/calendars/${calendarId}/places?placeId=${place.placeId}`
