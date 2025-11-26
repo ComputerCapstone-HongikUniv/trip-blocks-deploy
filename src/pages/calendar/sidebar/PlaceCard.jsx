@@ -130,11 +130,12 @@ export default function PlaceCard({
       const response = await axiosInstance.get(
         `/api/calendars/${calendarId}/places?placeId=${place.placeId}`
       );
+      // 드래그 시작 시, 이 장소를 Google 이벤트용으로 선택 상태에 둠
       setSelectedPlaceForGEvent(response.data);   // ✅ 선택된 장소만 세팅
       console.log('dragStart place detail:', response.data);
 
-      // ❌ 여기서는 makeGEventMode 켜지 말기
-      // setMakeGEventMode(true);  <- 이 줄은 삭제!
+      // ✅ 여기서 모드 ON (드래그 시작 시 배경 모드 진입)
+      setMakeGEventMode(true);
     } catch (err) {
       console.error('드래그 시작 시 장소 상세 정보 불러오기 실패:', err);
     }
@@ -156,7 +157,8 @@ export default function PlaceCard({
           draggable="true"
           onClick={handleCardOpen}
           onDragStart={handleDragStart}
-        // onDragEnd={handleDragEnd}
+          data-place-id={place.placeId}
+          onDragEnd={handleDragEnd}
         >
           {photoUrl ? (
             <img

@@ -3,7 +3,6 @@ import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin, { Draggable } from '@fullcalendar/interaction';
-// import interactionPlugin from '@fullcalendar/interaction';
 import axiosInstance from '../../../api/axiosInstance';
 import EventModal from './EventModal';
 import { getHexColor } from '../../../utils/colorPalette.js';
@@ -405,26 +404,30 @@ export default function WeeklyCalendar({
   }, [makeGEventMode, setMakeGEventMode, setSelectedPlaceForGEvent]);
 
   // 🔹 PlaceCard(.place-card-closed)를 FullCalendar 외부 드래그 소스로 등록
-  // useEffect(() => {
-  //   const container = document.querySelector('.place-list');
-  //   if (!container) return;
+  useEffect(() => {
+    const container = document.querySelector('.place-list');
+    if (!container) return;
 
-  //   const draggable = new Draggable(container, {
-  //     // 닫힌 카드 상태만 드래그 가능
-  //     itemSelector: '.place-card-closed',
-  //     // FullCalendar 쪽에 넘어갈 임시 이벤트 데이터
-  //     eventData: (el) => {
-  //       const titleEl = el.querySelector('.place-card-name');
-  //       return {
-  //         title: titleEl?.textContent || '새 일정',
-  //       };
-  //     },
-  //   });
+    const draggable = new Draggable(container, {
+      itemSelector: '.place-card-closed',
+      eventData: (el) => {
+        const titleEl = el.querySelector('.place-card-name');
+        const placeId = el.getAttribute('data-place-id');
 
-  //   return () => {
-  //     draggable.destroy();
-  //   };
-  // }, []);
+        return {
+          title: titleEl?.textContent || '새 일정',  // ✅ FullCalendar 임시 이벤트 제목
+          extendedProps: {
+            placeId,               // ✅ 혹시 selectedPlaceForGEvent가 없을 때 대비
+            isFromPlaceCard: true,
+          },
+        };
+      },
+    });
+
+    return () => {
+      draggable.destroy();
+    };
+  }, []);
 
   // 요일명 → JS Date요일 인덱스 매핑
   const weekdayMap = {
@@ -744,17 +747,21 @@ export default function WeeklyCalendar({
       return;
     }
 
-    // 항상 1시간짜리 고정
+    // ✅ 1시간 고정 끝시간
     const end = new Date(start.getTime() + 60 * 60 * 1000);
 
     const startTime = dateToLocalNoOffset(start);
     const endTime = dateToLocalNoOffset(end);
 
-    // FullCalendar가 임시로 만든 이벤트는 제거
+    // FullCalendar가 만든 임시 이벤트 제거
     fcEvent.remove();
 
-    if (!selectedPlaceForGEvent?.placeId) {
-      console.warn('selectedPlaceForGEvent 또는 placeId가 없습니다. Google 이벤트를 만들 수 없어요.');
+    // ✅ 어떤 placeId 쓸지 결정 (우선순위: state → extendedProps)
+    const placeIdToUse =
+      selectedPlaceForGEvent?.placeId || fcEvent.extendedProps?.placeId;
+
+    if (!placeIdToUse) {
+      console.warn('placeId를 찾을 수 없습니다. Google 이벤트를 만들 수 없어요.');
       return;
     }
 
@@ -762,9 +769,10 @@ export default function WeeklyCalendar({
       const response = await axiosInstance.post(
         `/api/calendars/${calendarId}/events/google-event`,
         {
-          placeId: selectedPlaceForGEvent.placeId,
+          placeId: placeIdToUse,
           startTime,
           endTime,
+          // 필요하다면 여기서 eventName: selectedPlaceForGEvent?.placeName 도 함께 보낼 수 있음
         }
       );
 
@@ -779,6 +787,7 @@ export default function WeeklyCalendar({
         refreshWarnings();
       }
 
+      // ✅ 방금 생성한 일정 모달 오픈
       setSelectedEventId(newEvent.eventId);
       setIsModalOpen(true);
       setIsEventLoading(true);
@@ -797,12 +806,13 @@ export default function WeeklyCalendar({
     } catch (err) {
       console.error('드롭 기반 Google 일정 생성 실패:', err);
     } finally {
-      // ✅ 드롭 성공/실패와 상관없이, 여기에서만 모드/선택/배경 정리
+      // ✅ 여기에서 모드/배경 정리 → “놓는 순간 배경 사라지기”
       setMakeGEventMode(false);
       setSelectedPlaceForGEvent(null);
       setOpeningHours([]);
     }
   };
+
 
   function formatTimeAMPM(date) {
     if (!date) return '';
@@ -876,8 +886,8 @@ export default function WeeklyCalendar({
           }}
           unselectAuto={false}     // 우리가 직접 unselect
           editable={true}          // (기본 drag/drop 가능 모드)
-          droppable={true}          // ✅ 외부 드래그 드롭 허용
-          eventReceive={handleEventReceive}   // ✅ 여기서만 
+          droppable={true}          //  외부 드래그 드롭 허용
+          eventReceive={handleEventReceive}   // 여기서만 
           // 구글 이벤트 생성
           eventResize={handleEventResize}
           eventDrop={handleEventDrop}
