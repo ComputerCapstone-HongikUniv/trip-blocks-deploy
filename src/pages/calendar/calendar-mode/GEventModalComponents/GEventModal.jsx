@@ -10,6 +10,7 @@ import { getTransportationInfo } from '../../../../utils/transportations.js';
 import EventModalTitle from '../EventModalTitle';
 import Warning from './Warning';
 import GEventModalBottom from './GEventModalBottom';
+import { getCategoryKor } from '../../../../utils/category.js';
 import DeleteClose from '../DeleteClose';
 
 export default function GEventModal({
@@ -131,7 +132,7 @@ export default function GEventModal({
             }}
           // onClick={() => setBlockColor(다음색)}  // 나중에 컬러피커 붙일 수 있음
           ></button>
-          <p className="category">{eventDetails.category}</p>
+          <p className="category">{getCategoryKor(eventDetails.category)}</p>
         </div>
         <div className="rating-comment">
           <p className="rating">★ {eventDetails.rating}</p>
