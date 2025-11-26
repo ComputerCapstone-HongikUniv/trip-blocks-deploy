@@ -410,9 +410,9 @@ export default function WeeklyCalendar({
     if (!container) return;
 
     const draggable = new Draggable(container, {
-      itemSelector: '.place-card-closed',
+      itemSelector: '.place-card-closed, .place-detail-container',
       eventData: (el) => {
-        const titleEl = el.querySelector('.place-card-name');
+        const titleEl = el.querySelector('.place-card-name, .place-detail-name');
         const placeId = el.getAttribute('data-place-id');
 
         // 🔹 드래그 시작 시: 장소 상세 정보 + 배경 모드 ON
@@ -421,8 +421,8 @@ export default function WeeklyCalendar({
             const res = await axiosInstance.get(
               `/api/calendars/${calendarId}/places?placeId=${placeId}`
             );
-            setSelectedPlaceForGEvent(res.data); // formattedOpeningHours 세팅
-            setMakeGEventMode(true);             // 배경 ON
+            setSelectedPlaceForGEvent(res.data);
+            setMakeGEventMode(true);
             console.log('Draggable dragStart place detail:', res.data);
           } catch (err) {
             console.error('드래그 시작 시 장소 상세 정보 불러오기 실패:', err);

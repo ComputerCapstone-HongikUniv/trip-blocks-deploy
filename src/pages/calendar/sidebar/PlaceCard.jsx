@@ -181,6 +181,7 @@ export default function PlaceCard({
         <div
           className={`place-detail-container ${selectedPlaceId === place.placeId ? "place-detail-container--active" : ""
             }`}
+          data-place-id={place.placeId}
         >
           {photoUrl ? (
             <img
