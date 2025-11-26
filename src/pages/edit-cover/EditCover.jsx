@@ -207,13 +207,16 @@ export default function EditCover() {
             onChange={handleFileChange}
           />
         </div>
+
+        <p>* 영문 이름의 사진 파일만 업로드가 가능합니다.</p>
       </div>
 
       <div className="submit-cover-btn-container">
-        <button className="button-secondary" type="button">
-          <Link to="/mypage">
-            취소
-          </Link>
+        <button className="button-secondary" type="button"
+          onClick={() => {
+            navigate('/mypage');
+          }}>
+          취소
         </button>
         <button
           type="button"

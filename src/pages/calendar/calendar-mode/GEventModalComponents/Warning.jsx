@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { getTransportationInfo } from '../../../../utils/transportations.js';
-import { CITY_CONFIG } from '../../../../utils/cityConfig.js';
+import { ALL_CITY_CONFIG } from '../../../../utils/cityConfig.js';
 import './Warning.css';
 
 export default function Warning({
@@ -21,7 +21,7 @@ export default function Warning({
   const [previousTransportPanel, setPreviousTransportPanel] = useState(false);
   const [nextTransportPanel, setNextTransportPanel] = useState(false);
   const city = headerInfo.city;
-  const cityConfig = CITY_CONFIG.find((c) => c.id === city);
+  const cityConfig = ALL_CITY_CONFIG.find((c) => c.id === city);
   const transportations = cityConfig?.transportation ?? [];
   const prevPanelRef = useRef(null);
   const nextPanelRef = useRef(null);

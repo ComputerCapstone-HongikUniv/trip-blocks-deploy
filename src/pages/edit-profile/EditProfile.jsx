@@ -220,6 +220,8 @@ export default function EditProfile() {
             onChange={handleFileChange}
           />
         </div>
+
+        <p>* 영문 이름의 사진 파일만 업로드가 가능합니다.</p>
       </div>
 
       <div className="nickname-container">

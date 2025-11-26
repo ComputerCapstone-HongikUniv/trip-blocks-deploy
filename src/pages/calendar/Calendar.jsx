@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import axiosInstance from '../../api/axiosInstance.js';
 import html2canvas from 'html2canvas';
-import { CITY_CONFIG } from '../../utils/cityConfig.js';
+import { ALL_CITY_CONFIG } from '../../utils/cityConfig.js';
 import CalendarHeader from '../../components/Header/CalendarHeader';
 import CalendarSideBar from './sidebar/CalendarSideBar.jsx';
 import WeeklyCalendar from './calendar-mode/WeeklyCalendar.jsx';
@@ -173,7 +173,7 @@ export default function Calendar() {
   // 캘린더 도시 중심 좌표 
   useEffect(() => {
     if (!city) return;
-    const selectedCity = CITY_CONFIG.find(c => c.id === city);
+    const selectedCity = ALL_CITY_CONFIG.find(c => c.id === city);
     if (selectedCity) {
       setCenter(selectedCity.center);
       setMapCenter(selectedCity.center);

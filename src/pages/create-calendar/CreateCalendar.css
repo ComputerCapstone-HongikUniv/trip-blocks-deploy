@@ -9,6 +9,11 @@
   margin: 100px 0 80px 0;
 }
 
+.location-select-info {
+  margin-top: 20px;
+  margin-bottom: 6px;
+}
+
 .date-select-container {
   margin-bottom: 80px;
 }

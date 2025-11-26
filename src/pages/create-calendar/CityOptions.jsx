@@ -2,34 +2,34 @@
 import { useState } from "react";
 import "./CityOptions.css";
 
-export default function CityOptions({ cities, setCity }) {
+export default function CityOptions({ ALL_CITY_CONFIG, setCity }) {
   const [selectedId, setSelectedId] = useState("seoul");
 
   return (
-    <div className="option-group">
+    <div className="city-option-group">
 
-      {cities.map((option) => {
-        const isSelected = selectedId === option.id;
+      {ALL_CITY_CONFIG.map((city) => {
+        const isSelected = selectedId === city.id;
 
         return (
           <label
-            key={option.id}
+            key={city.id}
             className={`option-card ${isSelected ? "option-card-selected" : ""}`}
           >
             {/* 진짜 라디오 (시각적으로 숨김) */}
             <input
               type="radio"
               name="display"
-              value={option.id}
+              value={city.id}
               checked={isSelected}
               onChange={() => {
-                setSelectedId(option.id);
-                setCity(option.id);
+                setSelectedId(city.id);
+                setCity(city.id);
               }}
               className="option-radio"
             />
 
-            <span className="option-label">{option.label}</span>
+            <span className="option-label">{city.kor}</span>
 
           </label>
         );

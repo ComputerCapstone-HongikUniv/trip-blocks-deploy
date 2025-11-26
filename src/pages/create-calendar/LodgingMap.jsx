@@ -1,7 +1,7 @@
 // LodgingMap.jsx
 import { useRef, useCallback, useEffect } from "react";
 import { GoogleMap } from "@react-google-maps/api";
-import { CITY_CONFIG } from '../../utils/cityConfig.js';
+import { ALL_CITY_CONFIG } from '../../utils/cityConfig.js';
 import { MAP_ID } from '../../api/googleMapApi.js';
 
 export default function LodgingMap({ city, setPlaces, query }) {
@@ -13,7 +13,7 @@ export default function LodgingMap({ city, setPlaces, query }) {
   const markerLibRef = useRef(null);
 
   const currentCity =
-    CITY_CONFIG.find((c) => c.id === city) || CITY_CONFIG[0];
+    ALL_CITY_CONFIG.find((c) => c.id === city) || ALL_CITY_CONFIG[0];
 
   const clearMarkers = () => {
     markersRef.current.forEach((m) => {

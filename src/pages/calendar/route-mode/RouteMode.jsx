@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState, useMemo, useRef } from "react";
 import dayjs from "dayjs";
 import axiosInstance from "../../../api/axiosInstance.js";
-import { CITY_CONFIG } from "../../../utils/cityConfig.js";
+import { ALL_CITY_CONFIG } from "../../../utils/cityConfig.js";
 import { formatKoreanDate } from "../../../utils/formatDate.js";
 import { DAY_COLORS } from "../../../utils/map.js";
 import { getTransportationInfo } from "../../../utils/transportations.js";
@@ -93,7 +93,7 @@ export default function RouteMode() {
   }, [calendarId, headerInfo]);
 
   const city = headerInfo?.city ?? null;
-  const cityConfig = CITY_CONFIG.find((c) => c.id === city);
+  const cityConfig = ALL_CITY_CONFIG.find((c) => c.id === city);
   const transportations = cityConfig?.transportation ?? [];
 
   // dayList + 날짜별 색 할당
@@ -113,7 +113,7 @@ export default function RouteMode() {
   // 도시 중심 좌표 설정
   useEffect(() => {
     if (!headerInfo) return;
-    const selectedCity = CITY_CONFIG.find((c) => c.id === headerInfo.city);
+    const selectedCity = ALL_CITY_CONFIG.find((c) => c.id === headerInfo.city);
     if (selectedCity) {
       setCityCenter(selectedCity.center);
     }

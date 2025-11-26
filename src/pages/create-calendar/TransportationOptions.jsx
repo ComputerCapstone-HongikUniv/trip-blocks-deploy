@@ -1,12 +1,9 @@
+import { ALL_CITY_CONFIG } from '../../utils/cityConfig';
 import './TransportationOptions.css';
 
-export default function TransportationOptions({ transportation, setTransportation }) {
-  const transportations = [
-    { id: "transit", label: "🚊 대중교통" },
-    { id: "driving", label: "🚘 자동차" },
-    { id: "walking", label: "🚶🏻‍♂️ 도보" },
-    { id: "bicycling", label: "🚴‍♀️ 자전거" }
-  ];
+export default function TransportationOptions({ city, transportation, setTransportation }) {
+  const cityConfig = ALL_CITY_CONFIG.find((c) => c.id === city);
+  const transportations = cityConfig?.transportation ?? [];
 
   return (
     <div className="travel-option-group">
@@ -30,7 +27,9 @@ export default function TransportationOptions({ transportation, setTransportatio
             />
 
             {/* ✅ 실제로 보일 텍스트 */}
-            <span className="travel-label">{transOption.label}</span>
+            <span className="travel-label">
+              {transOption.emoji}&nbsp;{transOption.kor}
+            </span>
           </label>
         );
       })}

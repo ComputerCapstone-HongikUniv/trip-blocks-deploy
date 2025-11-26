@@ -42,7 +42,7 @@ export default function MypageDropdown() {
       navigate("/");
     } catch (error) {
       console.error("로그아웃 실패:", error);
-      // 그래도 로컬 토큰은 지우고 보낼지 여부는 선택
+      // 그래도 로컬 토큰은 지우기
       localStorage.removeItem("token");
       localStorage.removeItem("userId");
       localStorage.removeItem("nickName");
@@ -63,12 +63,18 @@ export default function MypageDropdown() {
 
       {open && (
         <div className="menu-panel">
-          <button className="menu-item">
-            <Link to="/edit-cover">
-              커버사진 변경
-            </Link>
+          <button className="menu-item"
+            onClick={() => {
+              navigate('/edit-cover');
+            }}>
+            커버사진 변경
           </button>
-          <button className="menu-item">내 프로필</button>
+          <button className="menu-item"
+            onClick={() => {
+              navigate('/edit-profile');
+            }}>
+            내 프로필
+          </button>
           <button
             className="menu-item"
             onClick={handleLogout}

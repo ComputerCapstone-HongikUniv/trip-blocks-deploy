@@ -9,25 +9,24 @@ import LodgingMap from './LodgingMap';
 import AccommodationOptions from './AccommodationOptions';
 import ThemeOptioins from './ThemeOptioins';
 import TransportationOptions from './TransportationOptions';
+import { ALL_CITY_CONFIG } from '../../utils/cityConfig.js';
 import './CreateCalendar.css';
 
 export default function CreateCalendar() {
   const navigate = useNavigate();
-  const [city, setCity] = useState("seoul");
+  const [city, setCity] = useState("New York");
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [theme, setTheme] = useState(1);
   const [calendarName, setCalendarName] = useState("");
   const [inputText, setInputText] = useState('');
   const [accommodationQuery, setAccommodationQuery] = useState('');
-  const [transportation, setTransportation] = useState("transit");
-  const cities = [
-    { id: "New York", label: "뉴욕" },
-    { id: "London", label: "런던" },
-    { id: "Seoul", label: "서울" },
-    { id: "Tokyo", label: "도쿄" },
-  ];
+  const [transportation, setTransportation] = useState(null);
   const [places, setPlaces] = useState([]);  // 숙소
+
+  useEffect(() => {
+
+  });
 
   const handleCreateCalendar = async () => {
     if (!city || !startDate || !endDate || theme === null || !calendarName.trim()) {
@@ -59,7 +58,9 @@ export default function CreateCalendar() {
     <div className="create-calendar-container">
       <div className="location-select-container">
         <h2>여행 장소 선택</h2>
-        <CityOptions cities={cities} setCity={setCity} />
+        <CityOptions ALL_CITY_CONFIG={ALL_CITY_CONFIG} setCity={setCity} />
+        <p className='location-select-info'>* 서울은 자동차 관련 이동 정보가 제한됩니다.</p>
+        <p>* 도쿄는 대중교통 관련 이동 정보가 제한됩니다.</p>
       </div>
 
       <div className="date-select-container">
@@ -92,7 +93,11 @@ export default function CreateCalendar() {
       </div>
 
       <h2>기본 이동수단 선택</h2>
-      <TransportationOptions transportation={transportation} setTransportation={setTransportation} />
+      <TransportationOptions
+        city={city}
+        transportation={transportation}
+        setTransportation={setTransportation}
+      />
       <p className="travel-option-info">* 일정 간 기본 이동 수단으로 지정됩니다. <br />* 또한 일정 수정 및 삭제 시, 일정 간 이동 수단이 현재 선택된 기본 이동 수단으로 재설정됩니다.</p>
 
       <div className="calendar-button-container">
