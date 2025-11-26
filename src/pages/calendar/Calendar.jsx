@@ -34,6 +34,7 @@ export default function Calendar() {
   const [makeGEventMode, setMakeGEventMode] = useState(false);
   const [selectedPlaceForGEvent, setSelectedPlaceForGEvent] = useState(null);
   const [warnings, setWarnings] = useState([]);
+  const [showAllWarning, setShowAllWarning] = useState(null);
   const captureRef = useRef(null);
 
   const doCapture = async () => {
@@ -120,13 +121,20 @@ export default function Calendar() {
   };
 
   // 캘린더 모드 일정 리스트 불러오기
-  useEffect(() => {
-    const fetchEvents = async () => {
-      const response = await axiosInstance.get(`/api/calendars/${calendarId}/calendar-mode/events`);
+  const fetchEvents = useCallback(async () => {
+    try {
+      const response = await axiosInstance.get(
+        `/api/calendars/${calendarId}/calendar-mode/events`
+      );
       setEvents(response.data);
-    };
-    fetchEvents();
+    } catch (err) {
+      console.error("캘린더 모드 일정 리스트 불러오기 실패:", err);
+    }
   }, [calendarId]);
+
+  useEffect(() => {
+    fetchEvents();
+  }, [fetchEvents]);
 
   // 캘린더 모드 경고 리스트 불러오기
   const fetchWarnings = useCallback(async () => {
@@ -146,19 +154,20 @@ export default function Calendar() {
 
 
   // 지도 모드 일정 리스트 불러오기
-  useEffect(() => {
-    const fetchMapEvents = async () => {
-      try {
-        const response = await axiosInstance.get(
-          `/api/calendars/${calendarId}/map-mode/events`
-        );
-        setMapEvents(response.data);   // [{ eventId, placeId, startTime, endTime, latitude, longitude }, ...]
-      } catch (err) {
-        console.error("지도 모드 일정 불러오기 실패:", err);
-      }
-    };
-    fetchMapEvents();
+  const fetchMapEvents = useCallback(async () => {
+    try {
+      const response = await axiosInstance.get(
+        `/api/calendars/${calendarId}/map-mode/events`
+      );
+      setMapEvents(response.data);   // [{ eventId, placeId, startTime, endTime, latitude, longitude }, ...]
+    } catch (err) {
+      console.error("지도 모드 일정 불러오기 실패:", err);
+    }
   }, [calendarId]);
+
+  useEffect(() => {
+    fetchMapEvents();
+  }, [fetchMapEvents]);
 
   // 캘린더 헤더 정보 불러오기, city 
   useEffect(() => {
@@ -179,6 +188,16 @@ export default function Calendar() {
       setMapCenter(selectedCity.center);
     }
   }, [city]);
+
+  // 캘린더 배경 조회
+  useEffect(() => {
+    const fetchShowAllWarning = async () => {
+      const response = await axiosInstance.get(`/api/calendars/${calendarId}/calendar-background`);
+      setShowAllWarning(response.data.showAllWarning);
+    };
+    fetchShowAllWarning();
+  }, [calendarId]);
+
 
   // 추천 장소 리스트 불러오기 (함수로 분리)
   const fetchRecommendedPlaces = async () => {
@@ -350,7 +369,10 @@ export default function Calendar() {
               selectedPlaceForGEvent={selectedPlaceForGEvent}
               setSelectedPlaceForGEvent={setSelectedPlaceForGEvent}
               warnings={warnings}
+              showAllWarning={showAllWarning}
               refreshWarnings={fetchWarnings}
+              refreshEvents={fetchEvents}
+              refreshMapEvents={fetchMapEvents}
               captureRef={captureRef}
               onReadyForExport={handleCalendarReadyForExport}
               isExporting={isExporting}
@@ -370,7 +392,6 @@ export default function Calendar() {
               mode={mode}
               recomOrSearchOrSave={recomOrSearchOrSave}
               places={basePlaces}
-              events={events}
               mapEvents={mapEvents}
               onReSearch={handleMapReSearch}
               onPlaceMarkerClick={handlePlaceMarkerClickFromMap}

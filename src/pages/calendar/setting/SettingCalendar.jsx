@@ -59,9 +59,6 @@ export default function SettingCalendar() {
         showAllWarning,
       });
 
-      // 필요하면 알림
-      // alert("캘린더 설정이 저장되었습니다.");
-
       navigate(`/calendar/${calendarId}`);
     } catch (err) {
       console.error("캘린더 설정 저장 실패:", err);

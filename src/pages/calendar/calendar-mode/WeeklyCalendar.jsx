@@ -44,12 +44,15 @@ export default function WeeklyCalendar({
   selectedPlaceForGEvent,
   setSelectedPlaceForGEvent,
   warnings,
+  showAllWarning,
   refreshWarnings,
   captureRef,
   onReadyForExport,
   isExporting,
   selectedPlaceId,
-  setSelectedPlaceId
+  setSelectedPlaceId,
+  refreshEvents,
+  refreshMapEvents,
 }) {
   const calendarRef = useRef(null);
   const calendarWrapperRef = useRef(null);
@@ -242,6 +245,8 @@ export default function WeeklyCalendar({
     end: ev.endTime,
     backgroundColor: getHexColor(ev.blockColor),
     borderColor: getHexColor(ev.blockColor),
+    warningOpeningHours: ev.warningOpeningHours,
+    showOpeningHoursWarning: ev.showOpeningHoursWarning,
   }));
 
   const warningEvents = (warnings || [])
@@ -266,7 +271,7 @@ export default function WeeklyCalendar({
   const renderEventContent = (arg) => {
     const { event } = arg;
 
-    // 경고 이벤트는 그대로
+    // ⚠ 경고 이벤트(노란 블록)는 기존대로
     if (event.extendedProps.isWarningEvent) {
       return (
         <div className="warning-event-inner">
@@ -277,7 +282,7 @@ export default function WeeklyCalendar({
       );
     }
 
-    // ⚙️ 시작/끝 시간 직접 포맷
+    // ⏰ 일반 일정(실제 이벤트)에 대한 시간 포맷
     const start = event.start;
     const end = event.end;
 
@@ -288,9 +293,21 @@ export default function WeeklyCalendar({
       timeLabel = formatTimeAMPM(start);
     }
 
+    // ✅ 영업시간 경고 표시 여부 계산
+    const showOpeningWarning =
+      event.extendedProps.showOpeningHoursWarning &&
+      event.extendedProps.warningOpeningHours;
+
     return (
       <div className="my-event-inner">
-        <div className="my-event-title">{event.title}</div>
+        <div className={`my-event-title ${showAllWarning && showOpeningWarning && (
+          "my-event-title--warning"
+        )}`}>
+          {event.title}
+          {showAllWarning && showOpeningWarning && (
+            <span className="my-event-title-exclamation">!</span>
+          )}
+        </div>
         <div className="my-event-time">{timeLabel}</div>
       </div>
     );
@@ -550,19 +567,15 @@ export default function WeeklyCalendar({
         );
 
         const raw = response.data;
-
         // 백엔드가 id 또는 eventId 어떤 키를 줄지 모를 때 대비
         const newEvent = {
           ...raw,
           eventId: raw.eventId ?? raw.id,
         };
 
-        // 2) 캘린더 이벤트 리스트에 추가
-        setEvents((prev) => [...prev, newEvent]);
         if (typeof refreshWarnings === 'function') {
           refreshWarnings();
         }
-
 
         // 3) 바로 모달 띄우기 위한 상태 세팅
         setSelectedEventId(newEvent.eventId);
@@ -586,6 +599,13 @@ export default function WeeklyCalendar({
         setMakeGEventMode(false);
         setSelectedPlaceForGEvent(null);  // 선택된 장소도 초기화
         setOpeningHours([]);              // 혹시 모를 잔여 배경 제거
+
+        if (typeof refreshEvents === 'function') {
+          await refreshEvents();
+        }
+        if (typeof refreshMapEvents === 'function') {
+          await refreshMapEvents();
+        }
 
       } catch (err) {
         console.error('Google 일정 생성 실패:', err);
@@ -755,6 +775,11 @@ export default function WeeklyCalendar({
     return `${hours}:${mm}${ampm}`;
   }
 
+  // ✅ showAllWarning이 true일 때만 warningEvents를 포함
+  const combinedEvents = showAllWarning
+    ? [...calendarEvents, ...warningEvents, ...backgroundEvents]
+    : [...calendarEvents, ...backgroundEvents];
+
   return (
     <>
       <div
@@ -773,7 +798,7 @@ export default function WeeklyCalendar({
           ref={calendarRef}
           initialView="tripTimeGrid"
           plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-          events={[...calendarEvents, ...warningEvents, ...backgroundEvents]}
+          events={combinedEvents}
           headerToolbar={false}
           allDaySlot={false}
           locale="en-US"
