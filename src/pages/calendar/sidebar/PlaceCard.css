@@ -1,4 +1,5 @@
 .place-card-closed {
+  width: 100%;
   height: 118px;
   box-sizing: border-box;
   background-color: white;
@@ -13,7 +14,7 @@
 
 /* 선택된 경우 */
 .place-card-closed--active {
-  border: 1.5px solid #FF5E29;
+  border: 2px solid #FF5E29;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 

@@ -443,100 +443,145 @@ export default function WeeklyCalendar({
   const viewStart = visibleRange.start;         // 이 주의 시작일
   const baseDate = new Date(viewStart);
 
-  function parseTime(str) {
+  function parseTime(str, fallbackPeriod) {
     if (!str) return null;
-    const trimmed = str.trim(); // 예: "오전 8:30", "오후 8", "AM 10:00", "PM 5:30"
 
-    // 오전/오후/AM/PM + 시[:분] 형식 (분은 선택)
-    const m = trimmed.match(/^(오전|오후|AM|PM)\s*(\d{1,2})(?::(\d{2}))?$/i);
+    // 공백 정리
+    const trimmed = str.replace(/\s+/g, ' ').trim();
+    // 예: "AM 5:00", "11:00", "PM 12:30", "오전 9", "오후 3:30"
+
+    // (오전/오후/AM/PM)은 있어도 되고 없어도 됨
+    const m = trimmed.match(/^(?:(오전|오후|AM|PM)\s*)?(\d{1,2})(?::(\d{2}))?$/i);
     if (!m) {
       console.warn('[parseTime] 알 수 없는 형식:', str);
       return null;
     }
 
     let [, periodRaw, hStr, mStr] = m;
-    const period = periodRaw.toUpperCase(); // "오전" / "오후" / "AM" / "PM"
-    let hour = parseInt(hStr, 10);
-    let minute = mStr != null ? parseInt(mStr, 10) : 0; // 분이 없으면 0분
 
-    // 한글/영문 모두 지원
-    if (period === '오전' || period === 'AM') {
-      if (hour === 12) hour = 0;
-    } else if (period === '오후' || period === 'PM') {
-      if (hour !== 12) hour += 12;
+    // 이 시간 문자열이 직접 가지고 있는 period가 없으면 fallback 사용
+    let period = periodRaw || fallbackPeriod || null;
+
+    let hour = parseInt(hStr, 10);
+    let minute = mStr != null ? parseInt(mStr, 10) : 0;
+
+    // period가 있다면 24시간제로 변환
+    if (period) {
+      const up = period.toUpperCase();
+      if (up === '오전' || up === 'AM') {
+        if (hour === 12) hour = 0;     // 오전 12시는 0시
+      } else if (up === '오후' || up === 'PM') {
+        if (hour !== 12) hour += 12;   // 오후 1~11시는 13~23시
+      }
     }
 
-    return { hour, minute };
+    return { hour, minute, period };
   }
 
   const backgroundEvents = openingHours
-    .map((str, idx) => {
-      // "월요일: 오전 8:30 ~ 오후 6:00"
+    .flatMap((str, idx) => {
+      // "월요일: AM 11:30 ~ PM 11:00, PM 11:30~AM 2:00" 같은 전체 문자열
       const match = str.match(/^([^:]+):\s*(.+)$/);
       if (!match) {
         console.warn('[openingHours] 알 수 없는 형식:', str);
-        return null;
+        return [];
       }
+
       const dayPart = match[1].trim();   // "월요일"
-      const timePart = match[2].trim();  // "AM 10:30 ~ PM 5:30"
+      const timePart = match[2].trim();  // "AM 11:30 ~ PM 11:00, PM 5:00~9:30" 등
 
       const dayIndex = weekdayMap[dayPart];
       if (dayIndex === undefined) {
         console.warn('알 수 없는 요일 형식:', str);
-        return null;
+        return [];
       }
 
-      const eventStart = new Date(baseDate);
+      const eventBase = new Date(baseDate);
       const diff = (dayIndex + 7 - baseDate.getDay()) % 7;
-      eventStart.setDate(baseDate.getDate() + diff);
+      eventBase.setDate(baseDate.getDate() + diff);
 
-      // ✅ 1) 24시간 영업 처리 (예: "24시간 영업")
+      // ✅ 1) 24시간 영업
       if (/24\s*시간/.test(timePart)) {
-        eventStart.setHours(0, 0, 0, 0);
-        const eventEnd = new Date(eventStart);
-        eventEnd.setHours(23, 59, 59, 999);
+        const start = new Date(eventBase);
+        start.setHours(0, 0, 0, 0);
+        const end = new Date(start);
+        end.setHours(23, 59, 59, 999);
 
-        return {
+        return [{
           id: `bg-${idx}`,
-          start: eventStart,
-          end: eventEnd,
+          start,
+          end,
           display: 'background',
           rendering: 'background',
           backgroundColor: '#FFE4DA',
           borderColor: '#FFE4DA',
           extendedProps: { isBackgroundOverlay: true },
-        };
+        }];
       }
 
-      // ✅ 2) 휴무일 처리 (예: "휴무", "영업하지 않음")
-      if (/(휴무|영업\s*없음|영업하지\s*않음)/.test(timePart)) {
-        return null;
+      // ✅ 2) 휴무일
+      if (/(휴무|휴무일|영업\s*없음|영업하지\s*않음)/.test(timePart)) {
+        return [];
       }
 
-      // ✅ 3) "오전 8:30 ~ 오후 6:00" 일반 케이스 처리
-      const [startStrRaw, endStrRaw] = timePart.split('~');
-      const startInfo = parseTime(startStrRaw);
-      const endInfo = parseTime(endStrRaw);
+      // ✅ 3) 여러 타임 슬롯 처리: "PM 12:00~3:00, PM 6:00~10:00" 등
+      const ranges = timePart
+        .split(',')
+        .map(s => s.trim())
+        .filter(Boolean);
 
-      if (!startInfo || !endInfo) {
-        console.warn('시간 파싱 실패:', timePart);
-        return null;
-      }
+      const eventsForDay = [];
+      let lastPeriod = null;  // 다음 슬롯에서 period가 생략된 경우 사용
 
-      eventStart.setHours(startInfo.hour, startInfo.minute, 0, 0);
-      const eventEnd = new Date(eventStart);
-      eventEnd.setHours(endInfo.hour, endInfo.minute, 0, 0);
+      ranges.forEach((rangeStr, rangeIdx) => {
+        // "PM 12:00~3:00" / "AM 11:30 ~ PM 11:00" / "5:00~11:00" 등
+        const [startRaw, endRaw] = rangeStr.split('~').map(s => s.trim());
+        if (!startRaw || !endRaw) {
+          console.warn('[openingHours] 시간 범위 파싱 실패:', rangeStr);
+          return;
+        }
 
-      return {
-        id: `bg-${idx}`,
-        start: eventStart,
-        end: eventEnd,
-        display: 'background',
-        rendering: 'background',
-        backgroundColor: '#FFE4DA',
-        borderColor: '#FFE4DA',
-        extendedProps: { isBackgroundOverlay: true },
-      };
+        // start는 이전 슬롯의 period(있다면)를 fallback으로 사용
+        const startInfo = parseTime(startRaw, lastPeriod);
+        if (!startInfo) {
+          console.warn('startInfo 파싱 실패:', startRaw);
+          return;
+        }
+
+        // end는 start의 period → 없으면 lastPeriod 순으로 fallback
+        const endInfo = parseTime(endRaw, startInfo.period || lastPeriod);
+        if (!endInfo) {
+          console.warn('endInfo 파싱 실패:', endRaw);
+          return;
+        }
+
+        // 다음 슬롯을 위해 마지막 period 기억
+        lastPeriod = endInfo.period || startInfo.period || lastPeriod;
+
+        const start = new Date(eventBase);
+        start.setHours(startInfo.hour, startInfo.minute, 0, 0);
+
+        const end = new Date(eventBase);
+        end.setHours(endInfo.hour, endInfo.minute, 0, 0);
+
+        // ✅ 심야 영업 처리: PM 10:00 ~ AM 8:00 같은 경우 다음날로 넘기기
+        if (end <= start) {
+          end.setDate(end.getDate() + 1);
+        }
+
+        eventsForDay.push({
+          id: `bg-${idx}-${rangeIdx}`,
+          start,
+          end,
+          display: 'background',
+          rendering: 'background',
+          backgroundColor: '#FFE4DA',
+          borderColor: '#FFE4DA',
+          extendedProps: { isBackgroundOverlay: true },
+        });
+      });
+
+      return eventsForDay;
     })
     .filter(Boolean);
 

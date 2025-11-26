@@ -1,4 +1,5 @@
 .place-detail-container {
+  width: 100%;
   background-color: white;
   border: 1px solid #E9E9E9;
   border-radius: 12px;
@@ -8,7 +9,7 @@
 }
 
 .place-detail-container--active {
-  border: 1.5px solid #FF5E29;
+  border: 2px solid #FF5E29;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
