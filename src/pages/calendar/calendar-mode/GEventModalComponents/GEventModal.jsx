@@ -83,7 +83,7 @@ export default function GEventModal({
       const url = `/api/calendars/${calendarId}/events/google-event/${eventId ?? eventDetails.eventId}`;
       const response = await axiosInstance.put(url, body);
       const updatedEvent = response.data;
-      // console.log(response.data);
+      console.log(body);
       // 상위 캘린더 events 상태도 갱신
       if (onEventUpdated) {
         onEventUpdated(updatedEvent);

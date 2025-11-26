@@ -138,112 +138,118 @@ export default function Warning({
 
       <div className="transport-container">
         {/* 이전 일정으로부터의 이동 경고 */}
-        <div className="transport-from-previous">
-          <div className="transport-left-section">
-            <button className="transport-select"
-              onClick={() => {
-                togglePreviousTransportPanel();
-              }}>
-              {getTransportationInfo(previousTransportation).emoji}
-            </button>
-            {/* 드롭다운 */}
-            {previousTransportPanel && (
-              <div className="select-transport-panel"
-                ref={prevPanelRef}>
-                {transportations.map((transport) => (
-                  <button
-                    key={transport.id}
-                    className="transport-option-button"
-                    onClick={() => handleSelectPreviousTransport(transport)}
-                  >
-                    {transport.emoji}&nbsp;&nbsp;&nbsp;{transport.kor}
-                  </button>
-                ))}
-              </div>
-            )}
-            <span
-              className={`transport-txt ${showPreviousWarning && eventDetails.isPreviousWarning
-                ? "transport-txt--active"
-                : ""
-                }`}
-            >
-              이전 일정으로부터&nbsp;
-              {getTransportationInfo(previousTransportation).kor}&nbsp;
-              {eventDetails.previousFormattedTravelTime ?? 0}&nbsp;
-              소요
-              {eventDetails.isPreviousWarning && (
-                <span
-                  className={`exclamation ${showPreviousWarning ? "exclamation--active" : ""
-                    }`}
-                >
-                  !
-                </span>
+
+        {previousTransportation && (
+          <div className="transport-from-previous">
+            <div className="transport-left-section">
+              <button className="transport-select"
+                onClick={() => {
+                  togglePreviousTransportPanel();
+                }}>
+                {getTransportationInfo(previousTransportation).emoji}
+              </button>
+              {/* 드롭다운 */}
+              {previousTransportPanel && (
+                <div className="select-transport-panel"
+                  ref={prevPanelRef}>
+                  {transportations.map((transport) => (
+                    <button
+                      key={transport.id}
+                      className="transport-option-button"
+                      onClick={() => handleSelectPreviousTransport(transport)}
+                    >
+                      {transport.emoji}&nbsp;&nbsp;&nbsp;{transport.kor}
+                    </button>
+                  ))}
+                </div>
               )}
-            </span>
+              <span
+                className={`transport-txt ${showPreviousWarning && eventDetails.isPreviousWarning
+                  ? "transport-txt--active"
+                  : ""
+                  }`}
+              >
+                이전 일정으로부터&nbsp;
+                {getTransportationInfo(previousTransportation).kor}&nbsp;
+                {eventDetails.previousFormattedTravelTime ?? 0}&nbsp;
+                소요
+                {eventDetails.isPreviousWarning && (
+                  <span
+                    className={`exclamation ${showPreviousWarning ? "exclamation--active" : ""
+                      }`}
+                  >
+                    !
+                  </span>
+                )}
+              </span>
+            </div>
+            <label className="switch">
+              <input
+                type="checkbox"
+                checked={showPreviousWarning}
+                onChange={saveShowPreviousWarning}
+              />
+              <span className="slider round"></span>
+            </label>
           </div>
-          <label className="switch">
-            <input
-              type="checkbox"
-              checked={showPreviousWarning}
-              onChange={saveShowPreviousWarning}
-            />
-            <span className="slider round"></span>
-          </label>
-        </div>
+        )}
+
         {/* 이후 일정까지 이동 경고 */}
-        <div className="transport-to-next">
-          <div className="transport-left-section">
-            <button className="transport-select"
-              onClick={() => {
-                toggleNextTransportPanel();
-              }}
-            >
-              {getTransportationInfo(nextTransportation).emoji}
-            </button>
-            {nextTransportPanel && (
-              <div className="select-transport-panel"
-                ref={nextPanelRef}>
-                {transportations.map((transport) => (
-                  <button
-                    key={transport.id}
-                    className="transport-option-button"
-                    onClick={() => handleSelectNextTransport(transport)}
-                  >
-                    {transport.emoji}&nbsp;&nbsp;&nbsp;
-                    {transport.kor}
-                  </button>
-                ))}
-              </div>
-            )}
-            <span
-              className={`transport-txt ${showNextWarning && eventDetails.isNextWarning
-                ? "transport-txt--active"
-                : ""
-                }`}
-            >
-              이후 일정까지&nbsp;
-              {getTransportationInfo(nextTransportation).kor}&nbsp;
-              {eventDetails.nextFormattedTravelTime ?? 0}&nbsp;
-              소요
-              {eventDetails.isNextWarning && (
-                <span
-                  className={`exclamation ${showNextWarning ? "exclamation--active" : ""
-                    }`}
-                >
-                  !
-                </span>
+        {nextTransportation && (
+          <div className="transport-to-next">
+            <div className="transport-left-section">
+              <button className="transport-select"
+                onClick={() => {
+                  toggleNextTransportPanel();
+                }}
+              >
+                {getTransportationInfo(nextTransportation).emoji}
+              </button>
+              {nextTransportPanel && (
+                <div className="select-transport-panel"
+                  ref={nextPanelRef}>
+                  {transportations.map((transport) => (
+                    <button
+                      key={transport.id}
+                      className="transport-option-button"
+                      onClick={() => handleSelectNextTransport(transport)}
+                    >
+                      {transport.emoji}&nbsp;&nbsp;&nbsp;
+                      {transport.kor}
+                    </button>
+                  ))}
+                </div>
               )}
-            </span>
+              <span
+                className={`transport-txt ${showNextWarning && eventDetails.isNextWarning
+                  ? "transport-txt--active"
+                  : ""
+                  }`}
+              >
+                이후 일정까지&nbsp;
+                {getTransportationInfo(nextTransportation).kor}&nbsp;
+                {eventDetails.nextFormattedTravelTime ?? 0}&nbsp;
+                소요
+                {eventDetails.isNextWarning && (
+                  <span
+                    className={`exclamation ${showNextWarning ? "exclamation--active" : ""
+                      }`}
+                  >
+                    !
+                  </span>
+                )}
+              </span>
+            </div>
+            <label className="switch">
+              <input
+                type="checkbox"
+                checked={showNextWarning}
+                onChange={saveShowNextWarning}
+              />
+              <span className="slider round"></span>
+            </label>
           </div>
-          <label className="switch">
-            <input
-              type="checkbox"
-              checked={showNextWarning}
-              onChange={saveShowNextWarning}
-            />
-            <span className="slider round"></span>
-          </label>
-        </div>
+        )}
       </div>
     </div >
   );
