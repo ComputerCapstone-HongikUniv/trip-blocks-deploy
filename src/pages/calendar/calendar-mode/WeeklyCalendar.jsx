@@ -3,6 +3,7 @@ import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin, { Draggable } from '@fullcalendar/interaction';
+// import interactionPlugin from '@fullcalendar/interaction';
 import axiosInstance from '../../../api/axiosInstance';
 import EventModal from './EventModal';
 import { getHexColor } from '../../../utils/colorPalette.js';
@@ -414,10 +415,25 @@ export default function WeeklyCalendar({
         const titleEl = el.querySelector('.place-card-name');
         const placeId = el.getAttribute('data-place-id');
 
+        // 🔹 드래그 시작 시: 장소 상세 정보 + 배경 모드 ON
+        (async () => {
+          try {
+            const res = await axiosInstance.get(
+              `/api/calendars/${calendarId}/places?placeId=${placeId}`
+            );
+            setSelectedPlaceForGEvent(res.data); // formattedOpeningHours 세팅
+            setMakeGEventMode(true);             // 배경 ON
+            console.log('Draggable dragStart place detail:', res.data);
+          } catch (err) {
+            console.error('드래그 시작 시 장소 상세 정보 불러오기 실패:', err);
+          }
+        })();
+
+        // 🔹 FullCalendar에 넘겨줄 임시 이벤트 데이터
         return {
-          title: titleEl?.textContent || '새 일정',  // ✅ FullCalendar 임시 이벤트 제목
+          title: titleEl?.textContent || '새 일정',
           extendedProps: {
-            placeId,               // ✅ 혹시 selectedPlaceForGEvent가 없을 때 대비
+            placeId,
             isFromPlaceCard: true,
           },
         };
@@ -427,7 +443,7 @@ export default function WeeklyCalendar({
     return () => {
       draggable.destroy();
     };
-  }, []);
+  }, [calendarId, setSelectedPlaceForGEvent, setMakeGEventMode]);
 
   // 요일명 → JS Date요일 인덱스 매핑
   const weekdayMap = {
@@ -660,6 +676,8 @@ export default function WeeklyCalendar({
       } finally {
         // 선택 영역 해제
         selectInfo.view.calendar.unselect();
+        // 일정 생성 플로우가 끝났으니, PlaceCard 하이라이트도 해제
+        setSelectedPlaceId(null);
       }
       // 여기서 return 해줘야 아래 user-event 로직이 실행되지 않음
       return;
@@ -703,76 +721,41 @@ export default function WeeklyCalendar({
     }
   };
 
-  /* 🔹 PlaceCard를 캘린더 위로 드래그했을 때의 처리 */
-  const handleCalendarDragEnter = (e) => {
-    e.preventDefault();
-    // 드래그가 캘린더 영역에 들어오면 일단 모드 on
-    setMakeGEventMode(true);
-  };
-
-  const handleCalendarDragOver = (e) => {
-    // drop 가능하게 만들기
-    e.preventDefault();
-  };
-
-  const handleCalendarDragLeave = (e) => {
-    e.preventDefault();
-    const wrapper = calendarWrapperRef.current;
-    if (!wrapper) return;
-
-    const rect = wrapper.getBoundingClientRect();
-    const { clientX, clientY } = e;
-
-    // 드래그 포인터가 wrapper 바깥으로 완전히 나갔을 때만 모드 해제
-    const isOutside =
-      clientX < rect.left ||
-      clientX > rect.right ||
-      clientY < rect.top ||
-      clientY > rect.bottom;
-
-    if (isOutside) {
-      setMakeGEventMode(false);
-      setOpeningHours([]);
-    }
-  };
-
-  // 🔹 PlaceCard를 FullCalendar 위에 드롭했을 때 호출됨
-  const handleEventReceive = async (info) => {
-    const fcEvent = info.event;
-
-    const start = fcEvent.start;
-    if (!start) {
-      console.warn('드롭된 이벤트에 start가 없습니다.', info);
-      fcEvent.remove();
-      return;
-    }
-
-    // ✅ 1시간 고정 끝시간
-    const end = new Date(start.getTime() + 60 * 60 * 1000);
-
-    const startTime = dateToLocalNoOffset(start);
-    const endTime = dateToLocalNoOffset(end);
-
-    // FullCalendar가 만든 임시 이벤트 제거
-    fcEvent.remove();
-
-    // ✅ 어떤 placeId 쓸지 결정 (우선순위: state → extendedProps)
-    const placeIdToUse =
-      selectedPlaceForGEvent?.placeId || fcEvent.extendedProps?.placeId;
-
-    if (!placeIdToUse) {
-      console.warn('placeId를 찾을 수 없습니다. Google 이벤트를 만들 수 없어요.');
-      return;
-    }
-
+  // 🔹 PlaceCard를 FullCalendar 위에 드롭했을 때 호출됨 (Draggable X, drop 콜백용)
+  const handleExternalDrop = async (info) => {
     try {
+      // info.date: 드롭된 시간 (timeGrid면 시간까지 포함)
+      const start = info.date;
+      if (!start) {
+        console.warn('외부 드롭인데 date가 없습니다.', info);
+        return;
+      }
+
+      // 어떤 PlaceCard에서 온 건지 DOM에서 읽기
+      const draggedEl = info.draggedEl; // 실제 드롭된 PlaceCard DOM
+      const placeIdFromEl = draggedEl?.getAttribute('data-place-id');
+
+      // 1시간 고정 끝시간
+      const end = new Date(start.getTime() + 60 * 60 * 1000);
+
+      const startTime = dateToLocalNoOffset(start);
+      const endTime = dateToLocalNoOffset(end);
+
+      // 우선순위: state에 이미 setSelectedPlaceForGEvent 되어 있으면 그거 사용
+      const placeIdToUse =
+        selectedPlaceForGEvent?.placeId || placeIdFromEl;
+
+      if (!placeIdToUse) {
+        console.warn('placeId를 찾을 수 없습니다. Google 이벤트를 만들 수 없어요.');
+        return;
+      }
+
       const response = await axiosInstance.post(
         `/api/calendars/${calendarId}/events/google-event`,
         {
           placeId: placeIdToUse,
           startTime,
           endTime,
-          // 필요하다면 여기서 eventName: selectedPlaceForGEvent?.placeName 도 함께 보낼 수 있음
         }
       );
 
@@ -787,7 +770,7 @@ export default function WeeklyCalendar({
         refreshWarnings();
       }
 
-      // ✅ 방금 생성한 일정 모달 오픈
+      // 방금 생성한 일정 모달 오픈
       setSelectedEventId(newEvent.eventId);
       setIsModalOpen(true);
       setIsEventLoading(true);
@@ -803,16 +786,20 @@ export default function WeeklyCalendar({
       } finally {
         setIsEventLoading(false);
       }
+
+      if (typeof refreshEvents === 'function') {
+        await refreshEvents();
+      }
     } catch (err) {
-      console.error('드롭 기반 Google 일정 생성 실패:', err);
+      console.error('외부 드롭 기반 Google 일정 생성 실패:', err);
     } finally {
       // ✅ 여기에서 모드/배경 정리 → “놓는 순간 배경 사라지기”
       setMakeGEventMode(false);
       setSelectedPlaceForGEvent(null);
       setOpeningHours([]);
+      setSelectedPlaceId(null);
     }
   };
-
 
   function formatTimeAMPM(date) {
     if (!date) return '';
@@ -845,9 +832,6 @@ export default function WeeklyCalendar({
           }
         }}
         className={`weekly-calendar-wrapper ${isExporting ? 'weekly-calendar-wrapper--export' : ''}`}
-        onDragEnter={handleCalendarDragEnter}
-        onDragOver={handleCalendarDragOver}
-        onDragLeave={handleCalendarDragLeave}
       >
         <FullCalendar
           ref={calendarRef}
@@ -887,8 +871,7 @@ export default function WeeklyCalendar({
           unselectAuto={false}     // 우리가 직접 unselect
           editable={true}          // (기본 drag/drop 가능 모드)
           droppable={true}          //  외부 드래그 드롭 허용
-          eventReceive={handleEventReceive}   // 여기서만 
-          // 구글 이벤트 생성
+          drop={handleExternalDrop} // 🔹 HTML5 드래그된 PlaceCard drop 처리
           eventResize={handleEventResize}
           eventDrop={handleEventDrop}
           views={{

@@ -116,49 +116,14 @@ export default function PlaceCard({
     }
   }
 
-  async function handleDragStart(e) {
-    // 이 드래그가 "장소 드래그"라는 걸 표시
-    e.dataTransfer.effectAllowed = 'copy';
-    e.dataTransfer.setData(
-      'application/json',
-      JSON.stringify({ placeId: place.placeId })
-    );
-    e.dataTransfer.setData('text/plain', place.placeId);
-
-    try {
-      // 드래그 시작 시 미리 상세정보를 받아서 Calendar 쪽 상태에 심어 둔다
-      const response = await axiosInstance.get(
-        `/api/calendars/${calendarId}/places?placeId=${place.placeId}`
-      );
-      // 드래그 시작 시, 이 장소를 Google 이벤트용으로 선택 상태에 둠
-      setSelectedPlaceForGEvent(response.data);   // ✅ 선택된 장소만 세팅
-      console.log('dragStart place detail:', response.data);
-
-      // ✅ 여기서 모드 ON (드래그 시작 시 배경 모드 진입)
-      setMakeGEventMode(true);
-    } catch (err) {
-      console.error('드래그 시작 시 장소 상세 정보 불러오기 실패:', err);
-    }
-  }
-
-
-  function handleDragEnd() {
-    // 드래그가 끝났으면 어디에 드롭했든 모드/선택 장소 초기화
-    setMakeGEventMode(false);
-    setSelectedPlaceForGEvent(null);
-  }
-
   return (
     <>
       {!isPlaceCardOpen ? (
         // 기본 카드 모드
         <div className={`place-card-closed ${selectedPlaceId === place.placeId ? "place-card-closed--active" : ""
           }`}
-          draggable="true"
           onClick={handleCardOpen}
-          onDragStart={handleDragStart}
           data-place-id={place.placeId}
-          onDragEnd={handleDragEnd}
         >
           {photoUrl ? (
             <img
