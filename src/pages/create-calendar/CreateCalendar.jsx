@@ -21,12 +21,16 @@ export default function CreateCalendar() {
   const [calendarName, setCalendarName] = useState("");
   const [inputText, setInputText] = useState('');
   const [accommodationQuery, setAccommodationQuery] = useState('');
-  const [transportation, setTransportation] = useState(null);
+  const [transportation, setTransportation] = useState("transit");
   const [places, setPlaces] = useState([]);  // 숙소
 
   useEffect(() => {
-
-  });
+    if (city === "Tokyo") {
+      setTransportation("driving");
+    } else {
+      setTransportation("transit");
+    }
+  }, [city]);
 
   const handleCreateCalendar = async () => {
     if (!city || !startDate || !endDate || theme === null || !calendarName.trim()) {
@@ -45,7 +49,6 @@ export default function CreateCalendar() {
 
     try {
       await axiosInstance.post('/api/calendars', newCalendar);  // 서버에 저장
-      alert('캘린더 생성 완료!');
       navigate('/mypage');
     } catch (error) {
       console.error('캘린더 생성 실패:', error);
@@ -58,7 +61,7 @@ export default function CreateCalendar() {
     <div className="create-calendar-container">
       <div className="location-select-container">
         <h2>여행 장소 선택</h2>
-        <CityOptions ALL_CITY_CONFIG={ALL_CITY_CONFIG} setCity={setCity} />
+        <CityOptions ALL_CITY_CONFIG={ALL_CITY_CONFIG} city={city} setCity={setCity} />
         <p className='location-select-info'>* 서울은 자동차 관련 이동 정보가 제한됩니다.</p>
         <p>* 도쿄는 대중교통 관련 이동 정보가 제한됩니다.</p>
       </div>

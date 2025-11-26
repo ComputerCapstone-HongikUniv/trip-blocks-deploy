@@ -1,16 +1,5 @@
 export const ALL_CITY_CONFIG = [
   {
-    id: "Seoul",
-    kor: "서울",
-    center: { lat: 37.5665, lng: 126.978 },
-    defaultQuery: "seoul best hotel",
-    transportation: [
-      { id: "transit", emoji: "🚊", kor: "대중교통", capital: "TRANSIT" },
-      { id: "walking", emoji: "🚶🏻‍♂️", kor: "도보", capital: "WALKING" },
-      { id: "bicycling", emoji: "🚴‍♀️", kor: "자전거", capital: "BICYCLING" }
-    ]
-  },
-  {
     id: "New York",
     kor: "뉴욕",
     center: { lat: 40.7289, lng: -73.9858 },
@@ -30,6 +19,17 @@ export const ALL_CITY_CONFIG = [
     transportation: [
       { id: "transit", emoji: "🚊", kor: "대중교통", capital: "TRANSIT" },
       { id: "driving", emoji: "🚘", kor: "자동차", capital: "DRIVING" },
+      { id: "walking", emoji: "🚶🏻‍♂️", kor: "도보", capital: "WALKING" },
+      { id: "bicycling", emoji: "🚴‍♀️", kor: "자전거", capital: "BICYCLING" }
+    ]
+  },
+  {
+    id: "Seoul",
+    kor: "서울",
+    center: { lat: 37.5665, lng: 126.978 },
+    defaultQuery: "seoul best hotel",
+    transportation: [
+      { id: "transit", emoji: "🚊", kor: "대중교통", capital: "TRANSIT" },
       { id: "walking", emoji: "🚶🏻‍♂️", kor: "도보", capital: "WALKING" },
       { id: "bicycling", emoji: "🚴‍♀️", kor: "자전거", capital: "BICYCLING" }
     ]
