@@ -70,7 +70,7 @@
  }
 
  .routes-select {
-   width: 150px;
+   width: 160px;
    background-color: white;
    padding: 0 0 12px 0;
    border-radius: 16px;
@@ -132,7 +132,7 @@
 
  .day-dropdown-list {
    /* border: 1px solid red; */
-   width: 150px;
+   width: 160px;
    padding-bottom: 12px;
    /* border-radius: 16px; */
    /* overflow: hidden; */

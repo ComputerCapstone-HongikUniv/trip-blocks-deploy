@@ -8,7 +8,7 @@ import {
 
 // 이동수단별 이모지
 const MODE_EMOJI = {
-  DRIVING: "🚗",
+  DRIVING: "🚘",
   WALKING: "🚶‍♂️",
   TRANSIT: "🚊",
   BICYCLING: "🚲",
@@ -96,7 +96,7 @@ export default function RouteLegDirections({
           const mode = travelMode || "DRIVING";
           const emoji = MODE_EMOJI[mode] || "•";
 
-          setLabelText(`${emoji} ${durKo || dur}`);
+          setLabelText(`${emoji} 약 ${durKo || dur}`);
 
           // 중간 위치(overview_path 기준)
           const path = route.overview_path;

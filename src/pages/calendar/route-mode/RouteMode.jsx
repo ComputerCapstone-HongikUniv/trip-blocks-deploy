@@ -106,7 +106,6 @@ export default function RouteMode() {
       color: DAY_COLORS[idx % DAY_COLORS.length],
     }));
 
-
     setDayList(coloredList);
   }, [headerInfo]);
 
@@ -251,27 +250,22 @@ export default function RouteMode() {
   }
 
   // 이후 일정까지의 이동수단 선택 + 백엔드 UPDATE
-  async function handleSelectNextTransport(eventKey, transport, warningId) {
+  async function handleSelectNextTransport(eventKey, transport) {
+    // 패널 닫기
     setNextTransportPanel(false);
 
-    // warningId가 없으면 API 호출 불가능하니까 그냥 프론트만 업데이트
-    if (!warningId) {
-      console.warn("warningId가 없어서 백엔드 UPDATE는 생략합니다.", {
-        eventKey,
-        transport,
-      });
+    // 🔸 1) 현재 선택된 이벤트 찾기
+    const currentEvent = events.find((ev) => getEventKey(ev) === eventKey);
 
-      setEvents((prev) =>
-        prev.map((ev) =>
-          getEventKey(ev) === eventKey
-            ? { ...ev, nextTransportation: transport.id }
-            : ev
-        )
-      );
-      return;
-    }
+    // 🔸 2) 백엔드에 보낼 eventName 결정
+    //    - eventName이 있으면 그걸 사용
+    //    - 없으면 placeName 정도를 fallback으로 써도 괜찮음 (원하면 제거 가능)
+    const eventNameToSend =
+      currentEvent?.eventName ||
+      currentEvent?.placeName ||
+      "";
 
-    // 1) 프론트 상태 먼저 업데이트 (낙관적 업데이트)
+    // 🔸 3) 프론트 상태 먼저 업데이트 (낙관적 업데이트)
     setEvents((prev) =>
       prev.map((ev) =>
         getEventKey(ev) === eventKey
@@ -281,30 +275,30 @@ export default function RouteMode() {
     );
 
     try {
-      // 2) 백엔드 UPDATE 호출
+      // 🔸 4) 백엔드 UPDATE 호출
       await axiosInstance.put(
-        `/api/calendars/${calendarId}/route-detail/events/${warningId}`,
+        `/api/calendars/${calendarId}/events/google-event/${eventKey}`,
         {
-          transportation: transport.id, // e.g. "walking" / "driving" / "transit" / "bicycling"
+          nextTransportation: transport.id, // 이동수단
+          eventName: eventNameToSend,       // 🔥 여기 추가
         }
       );
 
-      // 3) (선택) 서버 기준 최신 데이터로 다시 맞추고 싶으면 재조회
+      // 🔸 5) (선택) 서버 상태 재동기화
       const refreshed = await axiosInstance.get(
         `/api/calendars/${calendarId}/route-detail`
       );
       setEvents(refreshed.data || []);
     } catch (error) {
       console.error("이동수단 UPDATE 실패:", error);
-
-      // 실패했을 때 롤백하고 싶으면 이 부분에서 다시 재조회하거나,
-      // 이전 상태를 저장해 두고 복원하는 로직을 넣어도 된다.
+      // 실패해도 서버 기준으로 다시 맞춰주기
       const refreshed = await axiosInstance.get(
         `/api/calendars/${calendarId}/route-detail`
       );
       setEvents(refreshed.data || []);
     }
   }
+
   if (!headerInfo) {
     return <div>상세 경로 정보를 불러오는 중...</div>;
   }
@@ -449,8 +443,7 @@ export default function RouteMode() {
                           {/* ex: 🚶 도보 / 실제 소요 시간은 나중에 leg.duration에서 가져올 수 있음 */}
                           {transportInfo.emoji} &nbsp;
                           {transportInfo.kor || "이동수단 미설정"}&nbsp;
-                          {ev.nextFormattedTravelTime}&nbsp;
-                          소요
+                          {ev.nextFormattedTravelTime}&nbsp;소요
 
                           <div className="select-transport-panel-wrapper">
                             <button
@@ -479,8 +472,7 @@ export default function RouteMode() {
                                       onClick={() =>
                                         handleSelectNextTransport(
                                           getEventKey(ev),
-                                          transport,
-                                          ev.nextWarningId
+                                          transport
                                         )
                                       }
                                     >

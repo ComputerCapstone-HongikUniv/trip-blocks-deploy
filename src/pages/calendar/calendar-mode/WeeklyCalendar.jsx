@@ -3,7 +3,6 @@ import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin, { Draggable } from '@fullcalendar/interaction';
-// import interactionPlugin from '@fullcalendar/interaction';
 import axiosInstance from '../../../api/axiosInstance';
 import EventModal from './EventModal';
 import { getHexColor } from '../../../utils/colorPalette.js';
@@ -49,7 +48,6 @@ export default function WeeklyCalendar({
   captureRef,
   onReadyForExport,
   isExporting,
-  selectedPlaceId,
   setSelectedPlaceId,
   refreshEvents,
   refreshMapEvents,
@@ -404,7 +402,7 @@ export default function WeeklyCalendar({
     };
   }, [makeGEventMode, setMakeGEventMode, setSelectedPlaceForGEvent]);
 
-  // 🔹 PlaceCard(.place-card-closed)를 FullCalendar 외부 드래그 소스로 등록
+  // PlaceCard(.place-card-closed)를 FullCalendar 외부 드래그 소스로 등록
   useEffect(() => {
     const container = document.querySelector('.place-list');
     if (!container) return;
@@ -415,21 +413,21 @@ export default function WeeklyCalendar({
         const titleEl = el.querySelector('.place-card-name, .place-detail-name');
         const placeId = el.getAttribute('data-place-id');
 
-        // 🔹 드래그 시작 시: 장소 상세 정보 + 배경 모드 ON
+        // 드래그 시작할 때 장소 상세 정보 미리 가져와서 상태에 저장
         (async () => {
           try {
             const res = await axiosInstance.get(
               `/api/calendars/${calendarId}/places?placeId=${placeId}`
             );
-            setSelectedPlaceForGEvent(res.data);
-            setMakeGEventMode(true);
-            console.log('Draggable dragStart place detail:', res.data);
+            setSelectedPlaceForGEvent(res.data); // openingHours 저장
+            setMakeGEventMode(true);             // 연분홍 배경 ON
+            // console.log('Draggable dragStart place detail:', res.data);
           } catch (err) {
             console.error('드래그 시작 시 장소 상세 정보 불러오기 실패:', err);
           }
         })();
 
-        // 🔹 FullCalendar에 넘겨줄 임시 이벤트 데이터
+        // FullCalendar에 넘겨줄 임시 이벤트 데이터
         return {
           title: titleEl?.textContent || '새 일정',
           extendedProps: {
@@ -721,7 +719,7 @@ export default function WeeklyCalendar({
     }
   };
 
-  // 🔹 PlaceCard를 FullCalendar 위에 드롭했을 때 호출됨 (Draggable X, drop 콜백용)
+  // PlaceCard를 FullCalendar 위에 드롭했을 때 호출됨 (Draggable X, drop 콜백용)
   const handleExternalDrop = async (info) => {
     try {
       // info.date: 드롭된 시간 (timeGrid면 시간까지 포함)
@@ -737,7 +735,6 @@ export default function WeeklyCalendar({
 
       // 1시간 고정 끝시간
       const end = new Date(start.getTime() + 60 * 60 * 1000);
-
       const startTime = dateToLocalNoOffset(start);
       const endTime = dateToLocalNoOffset(end);
 
@@ -764,13 +761,14 @@ export default function WeeklyCalendar({
         ...raw,
         eventId: raw.eventId ?? raw.id,
       };
-
+      // 1) 프론트 events state에 새 일정 추가 → 화면에 바로 보이게
       setEvents((prev) => [...prev, newEvent]);
+      // 2) 경고 재계산
       if (typeof refreshWarnings === 'function') {
         refreshWarnings();
       }
 
-      // 방금 생성한 일정 모달 오픈
+      // 3) 방금 만든 일정 모달 열기
       setSelectedEventId(newEvent.eventId);
       setIsModalOpen(true);
       setIsEventLoading(true);

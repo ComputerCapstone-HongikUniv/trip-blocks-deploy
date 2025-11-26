@@ -376,7 +376,6 @@ export default function Calendar() {
               captureRef={captureRef}
               onReadyForExport={handleCalendarReadyForExport}
               isExporting={isExporting}
-              selectedPlaceId={selectedPlaceId}
               setSelectedPlaceId={setSelectedPlaceId}
             />
           )}
