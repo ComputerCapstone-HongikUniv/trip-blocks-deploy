@@ -937,6 +937,10 @@ export default function WeeklyCalendar({
                 if (typeof refreshWarnings === 'function') {
                   refreshWarnings();
                 }
+                // ✅ 지도 모드 일정도 바로 다시 불러오기
+                if (typeof refreshMapEvents === 'function') {
+                  refreshMapEvents();
+                }
                 return;
               }
 
@@ -951,6 +955,10 @@ export default function WeeklyCalendar({
               setSelectedEventDetail(updated);
               if (typeof refreshWarnings === 'function') {
                 refreshWarnings();
+              }
+              // ✅ 지도 모드 일정도 바로 다시 불러오기
+              if (typeof refreshMapEvents === 'function') {
+                refreshMapEvents();
               }
             }}
           />
