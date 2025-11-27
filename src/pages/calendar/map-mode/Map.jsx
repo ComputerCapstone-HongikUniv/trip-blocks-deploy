@@ -187,9 +187,7 @@ export default function Map({
   return (
     <div className="main-map-wrapper">
       <GoogleMap
-
         mapContainerStyle={{ width: "100%", height: "100%" }}
-
         defaultCenter={center}
         defaultZoom={12}
         options={{ mapId: MAP_ID }}
@@ -206,7 +204,6 @@ export default function Map({
       </button>
 
       <div className="places-toggle">
-
         {recomOrSearchOrSave === "recommend" && (
           <div className="recommend-places-toggle">
             <span>추천 장소</span>

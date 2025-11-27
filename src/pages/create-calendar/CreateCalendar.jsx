@@ -62,7 +62,9 @@ export default function CreateCalendar() {
       <div className="location-select-container">
         <h2>여행 장소 선택</h2>
         <CityOptions ALL_CITY_CONFIG={ALL_CITY_CONFIG} city={city} setCity={setCity} />
-        <p className='location-select-info'>* 서울은 자동차 관련 이동 정보가 제한됩니다.</p>
+        <p className='location-select-info'>
+          * 서울은 대중교통 관련 이동 정보만 제공됩니다.
+        </p>
         <p>* 도쿄는 대중교통 관련 이동 정보가 제한됩니다.</p>
       </div>
 

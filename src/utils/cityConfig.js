@@ -29,9 +29,7 @@ export const ALL_CITY_CONFIG = [
     center: { lat: 37.5665, lng: 126.978 },
     defaultQuery: "seoul best hotel",
     transportation: [
-      { id: "transit", emoji: "🚊", kor: "대중교통", capital: "TRANSIT" },
-      { id: "walking", emoji: "🚶🏻‍♂️", kor: "도보", capital: "WALKING" },
-      { id: "bicycling", emoji: "🚴‍♀️", kor: "자전거", capital: "BICYCLING" }
+      { id: "transit", emoji: "🚊", kor: "대중교통", capital: "TRANSIT" }
     ]
   },
   {
