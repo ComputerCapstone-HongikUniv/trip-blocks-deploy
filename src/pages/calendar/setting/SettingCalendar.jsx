@@ -8,7 +8,7 @@ import './SettingCalendar.css';
 export default function SettingCalendar() {
   const navigate = useNavigate();
   const { calendarId } = useParams();
-
+  const [city, setCity] = useState("New York");
   const [theme, setTheme] = useState(1);
   const [calendarName, setCalendarName] = useState("");
   const [transportation, setTransportation] = useState("transit");
@@ -26,12 +26,14 @@ export default function SettingCalendar() {
 
         const {
           calendarName,
+          city,
           theme,
           defaultTransportation,
           showAllWarning,
         } = res.data;
 
         if (calendarName !== undefined) setCalendarName(calendarName);
+        if (city !== undefined) setCity(city);
         if (theme !== undefined) setTheme(theme);
         if (defaultTransportation !== undefined) {
           setTransportation(defaultTransportation);
@@ -101,6 +103,7 @@ export default function SettingCalendar() {
 
       <h2>기본 이동 수단 변경</h2>
       <TransportationOptions
+        city={city}
         transportation={transportation}
         setTransportation={setTransportation}
       />
