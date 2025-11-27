@@ -204,19 +204,25 @@ export default function WeeklyCalendar({
         }
       );
 
-      // 🔸 프론트 state도 업데이트
-      setEvents(prev =>
-        prev.map(ev =>
-          String(ev.eventId) === String(eventId)
-            ? { ...ev, startTime, endTime }
-            : ev
-        )
-      );
-
-      // 여기에서 최신 경고 다시 불러오기
-      if (typeof refreshWarnings === 'function') {
-        refreshWarnings();
+      // ✅ 1) 서버에서 시간 바뀐 기준으로 events를 다시 가져오기
+      if (typeof refreshEvents === 'function') {
+        await refreshEvents();    // 여기서 event들의 showOpeningHoursWarning 등이 최신 상태로 옴
+      } else {
+        // 혹시 refreshEvents 없으면 기존처럼 최소한 시간만은 반영
+        setEvents(prev =>
+          prev.map(ev =>
+            String(ev.eventId) === String(eventId)
+              ? { ...ev, startTime, endTime }
+              : ev
+          )
+        );
       }
+
+      // ✅ 2) 갭 경고(warnings)도 다시 계산
+      if (typeof refreshWarnings === 'function') {
+        await refreshWarnings();
+      }
+
     } catch (err) {
       console.error('이벤트 시간 변경 실패:', err);
       // 실패 시 화면상 위치/시간 원래대로 되돌리기
