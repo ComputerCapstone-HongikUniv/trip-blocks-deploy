@@ -1,11 +1,38 @@
+# 실수는 막고, 일정은 쌓고. Trip Blocks
 
-# trip-blocks-deploy
+> 모든 정보를 한눈에 확인하며 편리하게 여행 일정을 세울 수 있는 여행 캘린더 서비스입니다.  
+> 영업시간과 이동 시간을 고려한 경고 기능을 제공하여, 일정 계획 과정에서 발생할 수 있는 실수를 줄이고자 했습니다.
 
+---
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 🛠 Tech Stack
 
-Currently, two official plugins are available:
+- **Frontend:** React, Vite
+- **Backend:** Spring Boot
+- **Database:** MySQL
+- **Server:** Docker, Oracle Cloud
+- **Others:** Google Maps API, JWT, Figma, GitHub
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
->>>>>>> 08c8bd4 (init)
+---
+
+## ✨ Key Features
+
+### 1. 장소 검색 및 추천
+
+- **Google Maps API**의 장소 정보를 기반으로 장소를 검색하고 추천합니다.
+
+### 2. 캘린더 모드
+
+- **FullCalendar**를 활용해 주간 캘린더 UI를 구현했습니다.
+- 장소 컴포넌트를 캘린더 위로 드래그하면 해당 장소의 **영업시간을 확인하며 일정을 계획**할 수 있습니다.
+- 장소 컴포넌트를 원하는 시간대에 드롭하면 **해당 시간에 일정이 바로 생성**됩니다.
+- 사용자가 선택한 **이동수단과 이동시간을 고려해 실제 이동이 어려운 일정에는 경고**를 제공합니다.
+
+### 3. 지도 모드
+
+- **Google Maps JavaScript API**를 활용해 일정에 등록된 장소를 지도 위에 표시합니다.
+- 날짜별로 색상을 구분하고 방문 순서를 숫자로 표시해 **전체 여행 동선을 한눈에 파악**할 수 있도록 했습니다.
+
+### 4. 상세 경로 모드
+
+- 일정 간 이동 경로를 **이동수단별로 상세하게 확인**할 수 있습니다.
